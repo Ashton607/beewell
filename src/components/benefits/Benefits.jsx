@@ -65,7 +65,7 @@ export const metadata = {
 
 export default function Benefits() {
   return (
-    <main className={styles.page}>
+    <main className={styles.page} id="benefits">
       <header className={styles.header}>
         <p className={styles.eyebrow}>
           <FaHeart aria-hidden="true" /> Gentle touch. Big benefits.

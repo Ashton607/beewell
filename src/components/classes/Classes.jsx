@@ -86,7 +86,7 @@ export const metadata = {
 
 export default function Classes() {
   return (
-    <main className={styles.page}>
+    <main className={styles.page} id="classes">
       <header className={styles.header}>
         <p className={styles.eyebrow}>
           <FaCalendarCheck aria-hidden="true" /> 5 classes over 5 weeks

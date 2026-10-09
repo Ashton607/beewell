@@ -11,6 +11,7 @@ export default function Hero() {
     <section
       className={styles.hero}
       style={{ "--hero-image": `url(${HERO_IMAGE})` }}
+      id="home"
     >
       <div className={styles.overlay} />
 

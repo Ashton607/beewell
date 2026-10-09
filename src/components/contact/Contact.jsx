@@ -11,8 +11,8 @@ import {
 import styles from "./Contact.module.css";
 
 /* ---------- Edit these ---------- */
-const CONTACT_IMAGE = "/contact/contact.webp"; // put your image in /public/images/
-const EMAIL = "your@email.com";
+const CONTACT_IMAGE = "/contact/contact.webp";
+const EMAIL = "Pennydev1@gmail.com";
 const PHONE = "+27 82 457 6296";
 
 const enquiryTypes = [
@@ -110,7 +110,7 @@ export default function Contact() {
 
           {/* Right: form (design only, no submit logic yet) */}
           <form className={styles.form}>
-            <h2 className={styles.formTitle}>Send us a message</h2>
+            <h2 className={styles.formTitle}>Send a message</h2>
             <p className={styles.formSub}>
               We&apos;re happy to help with anything, big or small.
             </p>

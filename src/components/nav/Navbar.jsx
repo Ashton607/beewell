@@ -5,9 +5,9 @@ import Link from "next/link";
 import styles from "./Navbar.module.css";
 
 const links = [
-  { href: "/", label: "Home" },
-  { href: "/classes", label: "Classes" },
-  { href: "/benefits", label: "Benefits" },
+  { href: "/#home", label: "Home" },
+  { href: "/#classes", label: "Classes" },
+  { href: "/#benefits", label: "Benefits" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];

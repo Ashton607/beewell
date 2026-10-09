@@ -9,10 +9,9 @@
   position: relative;
   overflow: hidden;
   border-radius: 32px;
-  background-image: var(--contact-image),
-    linear-gradient(135deg, var(--color-green) 0%, var(--color-navy) 100%);
+  background-image: var(--contact-image);
   background-size: cover;
-  background-position: center;
+  background-position: center 80%;
   box-shadow: var(--shadow-soft);
 }
 
@@ -21,9 +20,9 @@
   inset: 0;
   background: linear-gradient(
     100deg,
-    rgba(31, 58, 107, 0.92) 0%,
-    rgba(31, 58, 107, 0.78) 50%,
-    rgba(31, 58, 107, 0.45) 100%
+    rgba(0, 0, 0, 0.808) 0%,
+    rgba(0, 0, 0, 0.425) 50%,
+    rgba(0, 0, 0, 0.164) 100%
   );
 }
 
@@ -156,7 +155,7 @@
 
 .field input,
 .field textarea {
-  width: 100%;
+  width: 95%;
   padding: 0.8rem 1.1rem;
   background: var(--color-white);
   border: 2px solid var(--color-sage);
