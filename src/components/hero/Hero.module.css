@@ -1,0 +1,181 @@
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 85vh;
+  padding: 4rem 1.25rem;
+  /* Your image goes on top; the gradient shows until the image exists */
+  background-image: var(--hero-image),
+    linear-gradient(135deg, var(--color-sage) 0%, var(--color-honey-light) 100%);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Soft cream wash so text stays readable on any photo */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(251, 248, 236, 0.92) 0%,
+    rgba(251, 248, 236, 0.75) 45%,
+    rgba(251, 248, 236, 0.15) 100%
+  );
+}
+
+.content {
+  position: relative;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.content > * {
+  max-width: 560px;
+}
+
+.tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  padding: 0.35rem 1rem;
+  background: var(--color-white);
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  color: var(--color-navy);
+  box-shadow: var(--shadow-soft);
+}
+
+.tagline svg {
+  color: var(--color-honey-dark);
+}
+
+.title {
+  margin: 0 0 1rem;
+  font-size: clamp(2.5rem, 6vw, 4.25rem);
+  color: var(--color-ink);
+}
+
+.highlight {
+  display: inline-block;
+  padding: 0 0.6rem;
+  background: var(--color-honey);
+  border-radius: 12px;
+  transform: rotate(-1.5deg);
+}
+
+.subtitle {
+  margin: 0 0 1.25rem;
+  font-size: 1.15rem;
+  color: var(--color-navy);
+}
+
+.motto {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 2rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-green);
+}
+
+.motto i {
+  font-style: normal;
+  color: var(--color-honey-dark);
+}
+
+/* Buttons */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-bottom: 2rem;
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.7rem;
+  border-radius: var(--radius-pill);
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.primary {
+  background: var(--color-honey);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-soft);
+}
+
+.primary:hover,
+.primary:focus-visible {
+  background: var(--color-honey-dark);
+  transform: translateY(-2px);
+}
+
+.secondary {
+  background: var(--color-white);
+  color: var(--color-green);
+  border: 2px solid var(--color-sage-dark);
+}
+
+.secondary:hover,
+.secondary:focus-visible {
+  background: var(--color-sage);
+  transform: translateY(-2px);
+}
+
+.secondary svg {
+  transition: transform 0.2s ease;
+}
+
+.secondary:hover svg {
+  transform: translateX(4px);
+}
+
+/* Quick facts */
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: none;
+}
+
+.facts li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1rem;
+  background: var(--color-sage);
+  border-radius: var(--radius-pill);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-green);
+}
+
+@media (max-width: 800px) {
+  .hero {
+    min-height: auto;
+    padding: 3rem 1.25rem;
+  }
+
+  /* More cover on small screens, text sits over the whole image */
+  .overlay {
+    background: rgba(251, 248, 236, 0.85);
+  }
+
+  .actions a {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+}
