@@ -1,15 +1,12 @@
 import { NextResponse } from "next/server";
-import { getCalendarClient } from "@/lib/googleCalendar";
+import { getCalendarClient } from "@/lib/googlecalendar";
 import {
   LOCATIONS,
   CAPACITY,
   WEEKS,
   TIMEZONE,
   UTC_OFFSET,
-} from "@/lib/classConfig";
-
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic"; // always check the live calendar
+} from "@/lib/classconfig";
 
 /*
   GET /api/availability?location=douglas&date=2026-10-16

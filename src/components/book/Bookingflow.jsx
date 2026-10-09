@@ -17,6 +17,7 @@ import {
   FaEnvelope,
   FaPhoneAlt,
   FaCalendarCheck,
+  FaSpinner,
 } from "react-icons/fa";
 import styles from "./Booking.module.css";
 
@@ -46,22 +47,6 @@ const LOCATIONS = [
   },
 ];
 
-/*
-  MOCK DATA: how many parents have booked each time slot.
-  TODO: replace getSpotsLeft() with a lookup against the owner's calendar.
-  A slot with 0 spots left is hidden until its 5 weeks are over.
-*/
-const MOCK_BOOKED = {
-  "douglas-08:00": 2,
-  "douglas-12:00": 5, // full, so it will not be shown
-  "douglas-16:30": 4,
-  "kimberley-10:00": 3,
-};
-
-function getSpotsLeft(locationId, timeId /* , date */) {
-  return CAPACITY - (MOCK_BOOKED[`${locationId}-${timeId}`] ?? 0);
-}
-
 /* ---------- Date helpers ---------- */
 const startOfDay = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
 const addDays = (d, n) =>
@@ -78,6 +63,11 @@ const formatLong = (d) =>
   });
 const formatShort = (d) =>
   d.toLocaleDateString("en-ZA", { weekday: "short", day: "numeric", month: "short" });
+// "YYYY-MM-DD" in the browser's local date, for the availability API
+const toISODate = (d) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
+    d.getDate()
+  ).padStart(2, "0")}`;
 
 const STEPS = ["Location", "Date", "Time", "Details", "Confirm"];
 const WEEKDAY_HEADERS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
@@ -202,19 +192,49 @@ export default function BookingFlow() {
   const [details, setDetails] = useState({ name: "", email: "", phone: "" });
   const [stage, setStage] = useState("select"); // select | confirm | done
 
+  // Live availability from /api/availability
+  const [timesData, setTimesData] = useState([]);
+  const [timesStatus, setTimesStatus] = useState("idle"); // idle | loading | ready | error
+  const [retryCount, setRetryCount] = useState(0);
+
   useEffect(() => {
     setToday(startOfDay(new Date()));
   }, []);
 
+  // Check the live calendar whenever the location or date changes
+  useEffect(() => {
+    if (!locationId || !date) {
+      setTimesData([]);
+      setTimesStatus("idle");
+      return;
+    }
+
+    const controller = new AbortController();
+    setTimesStatus("loading");
+
+    fetch(`/api/availability?location=${locationId}&date=${toISODate(date)}`, {
+      signal: controller.signal,
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Request failed");
+        return res.json();
+      })
+      .then((data) => {
+        setTimesData(data.times);
+        setTimesStatus("ready");
+      })
+      .catch((err) => {
+        if (err.name !== "AbortError") setTimesStatus("error");
+      });
+
+    return () => controller.abort();
+  }, [locationId, date, retryCount]);
+
   const location = LOCATIONS.find((l) => l.id === locationId) ?? null;
   const time = location?.times.find((t) => t.id === timeId) ?? null;
 
-  // Times for the chosen date. Full times (0 spots left) are not shown.
-  const availableTimes = location
-    ? location.times
-        .map((t) => ({ ...t, left: getSpotsLeft(location.id, t.id, date) }))
-        .filter((t) => t.left > 0)
-    : [];
+  // Full times (0 spots left) are not shown
+  const availableTimes = timesData.filter((t) => !t.full);
 
   const classDates = date
     ? Array.from({ length: WEEKS }, (_, i) => addDays(date, i * 7))
@@ -236,6 +256,8 @@ export default function BookingFlow() {
   const chooseDate = (d) => {
     setDate(d);
     setTimeId(null);
+    setTimesData([]); // avoid flashing the previous date's times
+    setTimesStatus("loading");
   };
 
   const updateDetail = (e) =>
@@ -325,6 +347,22 @@ export default function BookingFlow() {
           <Panel number={3} icon={FaClock} title="Available times" locked={!date}>
             {!date ? (
               <LockedNote text="Pick a date to see the available times." />
+            ) : timesStatus === "loading" ? (
+              <p className={styles.statusNote}>
+                <FaSpinner className={styles.spin} aria-hidden="true" />
+                Checking availability…
+              </p>
+            ) : timesStatus === "error" ? (
+              <div className={styles.errorBox}>
+                <p>We couldn&apos;t check availability right now.</p>
+                <button
+                  type="button"
+                  className={styles.retry}
+                  onClick={() => setRetryCount((n) => n + 1)}
+                >
+                  Try again
+                </button>
+              </div>
             ) : availableTimes.length === 0 ? (
               <p className={styles.fullNote}>
                 All times are full for this date. Please try another date.
@@ -346,7 +384,9 @@ export default function BookingFlow() {
                       </span>
                       <span className={styles.spots}>
                         <FaUsers aria-hidden="true" />
-                        {t.left === 1 ? "Last spot!" : `${t.left} of ${CAPACITY} spots left`}
+                        {t.spotsLeft === 1
+                          ? "Last spot!"
+                          : `${t.spotsLeft} of ${CAPACITY} spots left`}
                       </span>
                     </span>
                   </label>
