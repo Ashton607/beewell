@@ -4,7 +4,7 @@ import { GiSprout } from "react-icons/gi";
 import styles from "./Hero.module.css";
 
 // Replace this with your own image (put the file in /public/images/)
-const HERO_IMAGE = "/images/hero.jpg";
+const HERO_IMAGE = "/hero/logo.jpeg";
 
 export default function Hero() {
   return (
