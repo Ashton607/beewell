@@ -1,0 +1,657 @@
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3.5rem 1.25rem 5rem;
+}
+
+/* ---------- Header ---------- */
+.header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 2.5rem;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  padding: 0.35rem 1rem;
+  background: var(--color-sage);
+  color: var(--color-green);
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+}
+
+.title {
+  margin: 0 0 1rem;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+}
+
+.highlight {
+  display: inline-block;
+  padding: 0 0.6rem;
+  background: var(--color-honey);
+  border-radius: 12px;
+  transform: rotate(-1.5deg);
+}
+
+.intro {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+/* ---------- Progress steps ---------- */
+.steps {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  max-width: 640px;
+  margin: 0 auto 2.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  position: relative;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #8a94aa;
+}
+
+/* connecting line */
+.step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 18px;
+  left: calc(50% + 24px);
+  right: calc(-50% + 24px);
+  height: 3px;
+  background: var(--color-sage);
+  border-radius: 2px;
+}
+
+.stepDot {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  background: var(--color-white);
+  border: 3px solid var(--color-sage);
+  border-radius: 50%;
+  font-size: 0.9rem;
+}
+
+.stepActive {
+  color: var(--color-ink);
+}
+
+.stepActive .stepDot {
+  background: var(--color-honey);
+  border-color: var(--color-honey);
+  color: var(--color-ink);
+}
+
+.stepDone {
+  color: var(--color-green);
+}
+
+.stepDone .stepDot {
+  background: var(--color-green);
+  border-color: var(--color-green);
+  color: var(--color-white);
+}
+
+.stepDone::after {
+  background: var(--color-green) !important;
+}
+
+/* ---------- Panels grid ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.panel {
+  padding: 1.75rem;
+  background: var(--color-white);
+  border-top: 6px solid var(--color-honey);
+  border-radius: 24px;
+  box-shadow: var(--shadow-soft);
+  transition: opacity 0.2s ease;
+}
+
+.locked {
+  border-top-color: var(--color-sage);
+  opacity: 0.7;
+}
+
+.panelHead {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.panelNumber {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  background: var(--color-honey);
+  color: var(--color-ink);
+  border-radius: 50%;
+  font-weight: 800;
+}
+
+.locked .panelNumber {
+  background: var(--color-sage);
+  color: var(--color-green);
+}
+
+.panelTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.panelTitle svg {
+  color: var(--color-green);
+}
+
+.lockedNote {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.75rem 0 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #7d8aa3;
+}
+
+.fullNote {
+  margin: 0;
+  padding: 1rem;
+  background: var(--color-peach);
+  border-radius: 14px;
+  font-weight: 700;
+  color: #7a2f1d;
+}
+
+/* ---------- 1. Locations ---------- */
+.locations {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.locCard {
+  position: relative;
+  cursor: pointer;
+}
+
+.locCard input,
+.timeCard input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.locBody {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--color-cream);
+  border: 3px solid var(--color-sage);
+  border-radius: 18px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.locCard:hover .locBody {
+  background: var(--color-sage);
+}
+
+.locCheck {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  background: var(--color-white);
+  border: 3px solid var(--color-sage-dark);
+  border-radius: 8px;
+  color: transparent;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+}
+
+.locName {
+  display: block;
+  font-size: 1.15rem;
+  color: var(--color-ink);
+}
+
+.locDay {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-green);
+}
+
+.locCard input:checked + .locBody {
+  background: var(--color-honey-light);
+  border-color: var(--color-honey);
+}
+
+.locCard input:checked + .locBody .locCheck {
+  background: var(--color-honey);
+  border-color: var(--color-honey-dark);
+  color: var(--color-ink);
+}
+
+.locCard input:focus-visible + .locBody,
+.timeCard input:focus-visible + .timeBody {
+  outline: 3px solid var(--color-green);
+  outline-offset: 2px;
+}
+
+/* ---------- 2. Calendar ---------- */
+.calHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.calMonth {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--color-ink);
+}
+
+.calNav {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  background: var(--color-sage);
+  color: var(--color-green);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.calNav:hover:not(:disabled) {
+  background: var(--color-honey-light);
+}
+
+.calNav:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.calGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.3rem;
+}
+
+.calWeekday {
+  padding-bottom: 0.3rem;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--color-green);
+}
+
+.day {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #b4bbca; /* greyed out */
+  cursor: not-allowed;
+}
+
+.dayAvailable {
+  background: var(--color-sage);
+  color: var(--color-green);
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.dayAvailable:hover {
+  background: var(--color-honey-light);
+  transform: scale(1.08);
+}
+
+.dayToday {
+  border-color: var(--color-sage-dark);
+}
+
+.daySelected,
+.daySelected:hover {
+  background: var(--color-honey);
+  color: var(--color-ink);
+  border-color: var(--color-honey-dark);
+}
+
+.calHint {
+  margin: 0.9rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-green);
+}
+
+/* ---------- 3. Times ---------- */
+.times {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.timeCard {
+  position: relative;
+  cursor: pointer;
+}
+
+.timeBody {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.9rem 1.25rem;
+  background: var(--color-cream);
+  border: 3px solid var(--color-sage);
+  border-radius: 18px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.timeCard:hover .timeBody {
+  background: var(--color-sage);
+}
+
+.timeLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--color-ink);
+}
+
+.timeLabel svg {
+  color: var(--color-green);
+}
+
+.spots {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.8rem;
+  background: var(--color-white);
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-green);
+}
+
+.timeCard input:checked + .timeBody {
+  background: var(--color-honey-light);
+  border-color: var(--color-honey);
+}
+
+/* ---------- 4. Details form ---------- */
+.fields {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.fields:disabled {
+  opacity: 0.6;
+}
+
+.field {
+  display: block;
+  margin-bottom: 0.9rem;
+}
+
+.field input {
+  width: 100%;
+  padding: 0.8rem 1.1rem;
+  background: var(--color-cream);
+  border: 2px solid var(--color-sage);
+  border-radius: 18px;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--color-navy);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field input::placeholder {
+  color: #7d8aa3;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--color-honey);
+  box-shadow: 0 0 0 4px rgba(246, 201, 69, 0.3);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Buttons ---------- */
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1.6rem;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.primary {
+  width: 100%;
+  background: var(--color-honey);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-soft);
+}
+
+.primary:hover {
+  background: var(--color-honey-dark);
+  transform: translateY(-2px);
+}
+
+.secondary {
+  background: var(--color-sage);
+  color: var(--color-green);
+}
+
+.secondary:hover {
+  background: var(--color-sage-dark);
+  transform: translateY(-2px);
+}
+
+/* ---------- Confirmation ---------- */
+.confirm,
+.done {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--color-white);
+  border-top: 6px solid var(--color-honey);
+  border-radius: 28px;
+  box-shadow: var(--shadow-soft);
+}
+
+.done {
+  text-align: center;
+}
+
+.doneIcon {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  font-size: 3.5rem;
+  color: var(--color-green);
+}
+
+.confirmTitle {
+  margin: 0 0 0.25rem;
+  font-size: 1.8rem;
+}
+
+.confirmSub {
+  margin: 0 0 1.5rem;
+}
+
+.summary {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0 0 1.5rem;
+}
+
+.summaryRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 1.1rem;
+  background: var(--color-cream);
+  border-radius: 14px;
+}
+
+.summaryRow dt {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  color: var(--color-green);
+}
+
+.summaryRow dd {
+  margin: 0;
+  text-align: right;
+  font-weight: 700;
+  color: var(--color-ink);
+  word-break: break-word;
+}
+
+.weeks {
+  margin-bottom: 1.75rem;
+  padding: 1.25rem;
+  background: var(--color-sage);
+  border-radius: 18px;
+}
+
+.weeksTitle {
+  margin: 0 0 0.8rem;
+  font-weight: 800;
+  color: var(--color-green);
+}
+
+.weekList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.weekItem {
+  display: flex;
+  flex-direction: column;
+  padding: 0.6rem 0.9rem;
+  background: var(--color-white);
+  border-radius: 12px;
+  font-size: 0.85rem;
+  color: var(--color-green);
+}
+
+.weekItem strong {
+  font-size: 0.98rem;
+  color: var(--color-ink);
+}
+
+.confirmActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+
+.confirmActions .primary {
+  flex: 1 1 220px;
+  width: auto;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 800px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .stepLabel {
+    display: none;
+  }
+
+  .step:not(:last-child)::after {
+    left: calc(50% + 22px);
+    right: calc(-50% + 22px);
+  }
+
+  .panel,
+  .confirm,
+  .done {
+    padding: 1.4rem 1.15rem;
+  }
+
+  .summaryRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+
+  .summaryRow dd {
+    text-align: left;
+  }
+}

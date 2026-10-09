@@ -110,7 +110,7 @@ export default function Benefits() {
             <FaCalendarCheck aria-hidden="true" />
             Book a class
           </Link>
-          <Link href="/classes" className={styles.secondary}>
+          <Link href="#classes" className={styles.secondary}>
             How classes work
             <FaArrowRight aria-hidden="true" />
           </Link>

@@ -42,7 +42,7 @@ export default function Hero() {
             <FaCalendarCheck aria-hidden="true" />
             Book a class
           </Link>
-          <Link href="/classes" className={styles.secondary}>
+          <Link href="#classes" className={styles.secondary}>
             See our services
             <FaArrowRight aria-hidden="true" />
           </Link>
