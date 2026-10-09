@@ -15,9 +15,9 @@ import {
 import styles from "./About.module.css";
 
 /* ---------- Edit these ---------- */
-const INSTRUCTOR_NAME = "Your Name";
-const ABOUT_IMAGE = "/images/about.jpg"; // put your photo in /public/images/
-const IAIM_URL = "#"; // replace with the real International Association of Infant Massage link
+const INSTRUCTOR_NAME = "Penny";
+const ABOUT_IMAGE = "/about/logo.jpeg"; // put your photo in /public/images/
+const IAIM_URL = "https://iaimsa.co.za"; // replace with the real International Association of Infant Massage link
 
 const values = [
   "Gentle, loving care",
@@ -49,7 +49,7 @@ export default function AboutPage() {
       <section className={styles.story}>
         <div className={styles.storyText}>
           <p className={styles.eyebrow}>
-            <FaHeart aria-hidden="true" /> Our story
+            <FaHeart aria-hidden="true" /> My story
           </p>
           <h1 className={styles.title}>
             Hi, I&apos;m{" "}
@@ -110,7 +110,7 @@ export default function AboutPage() {
           <span className={styles.mvvIcon}>
             <FaBullseye aria-hidden="true" />
           </span>
-          <h2>Our mission</h2>
+          <h2>Mission</h2>
           <p>
             To help parents bond with their babies through gentle, nurturing
             massage, in a calm and supportive space where every family feels
@@ -122,7 +122,7 @@ export default function AboutPage() {
           <span className={styles.mvvIcon}>
             <FaEye aria-hidden="true" />
           </span>
-          <h2>Our vision</h2>
+          <h2>Vision</h2>
           <p>
             A community where loving touch is part of every baby&apos;s first
             year, helping little ones sleep, relax and grow, and helping
@@ -134,7 +134,7 @@ export default function AboutPage() {
           <span className={styles.mvvIcon}>
             <FaGem aria-hidden="true" />
           </span>
-          <h2>Our values</h2>
+          <h2>Values</h2>
           <ul className={styles.valueList}>
             {values.map((v) => (
               <li key={v}>

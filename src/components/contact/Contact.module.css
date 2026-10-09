@@ -1,0 +1,318 @@
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 5rem;
+}
+
+/* Background section (your image sits on top of the gradient placeholder) */
+.wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: 32px;
+  background-image: var(--contact-image),
+    linear-gradient(135deg, var(--color-green) 0%, var(--color-navy) 100%);
+  background-size: cover;
+  background-position: center;
+  box-shadow: var(--shadow-soft);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    rgba(31, 58, 107, 0.92) 0%,
+    rgba(31, 58, 107, 0.78) 50%,
+    rgba(31, 58, 107, 0.45) 100%
+  );
+}
+
+.inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  padding: 3.5rem 3rem;
+}
+
+/* ---------- Info side ---------- */
+.info {
+  color: var(--color-white);
+}
+
+.title {
+  margin: 0 0 1.25rem;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  color: var(--color-white);
+}
+
+.highlight {
+  display: inline-block;
+  margin-top: 0.35rem;
+  padding: 0 0.6rem;
+  background: var(--color-honey);
+  color: var(--color-ink);
+  border-radius: 12px;
+  transform: rotate(-1.5deg);
+}
+
+.lead {
+  max-width: 480px;
+  margin: 0 0 2.25rem;
+  font-size: 1.1rem;
+  opacity: 0.95;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.75rem 2rem;
+  margin-bottom: 2rem;
+}
+
+.detail h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.4rem;
+  font-size: 1.05rem;
+  color: var(--color-white);
+}
+
+.detail h2 svg {
+  color: var(--color-honey);
+}
+
+.detail p {
+  margin: 0;
+  font-size: 0.97rem;
+  opacity: 0.92;
+}
+
+.detail a {
+  color: var(--color-white);
+  text-decoration: none;
+  border-bottom: 2px solid var(--color-honey);
+  transition: color 0.2s ease;
+}
+
+.detail a:hover,
+.detail a:focus-visible {
+  color: var(--color-honey-light);
+}
+
+.socials {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.social {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  background: var(--color-white);
+  color: var(--color-green);
+  border-radius: 50%;
+  font-size: 1.15rem;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.social:hover,
+.social:focus-visible {
+  background: var(--color-honey);
+  color: var(--color-ink);
+  transform: translateY(-2px);
+}
+
+/* ---------- Form card ---------- */
+.form {
+  padding: 2rem;
+  background: var(--color-cream);
+  border-radius: 28px;
+  border-top: 6px solid var(--color-honey);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+}
+
+.formTitle {
+  margin: 0 0 0.25rem;
+  font-size: 1.6rem;
+}
+
+.formSub {
+  margin: 0 0 1.5rem;
+  font-size: 0.97rem;
+}
+
+.field {
+  display: block;
+  margin-bottom: 0.9rem;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 0.8rem 1.1rem;
+  background: var(--color-white);
+  border: 2px solid var(--color-sage);
+  border-radius: 18px;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--color-navy);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: #7d8aa3;
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--color-honey);
+  box-shadow: 0 0 0 4px rgba(246, 201, 69, 0.3);
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 130px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+}
+
+/* Enquiry type chips (radio buttons styled as pills) */
+.types {
+  margin: 0.4rem 0 1rem;
+  padding: 0;
+  border: none;
+}
+
+.types legend {
+  margin-bottom: 0.6rem;
+  padding: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.chip {
+  position: relative;
+  cursor: pointer;
+}
+
+.chip input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.chip span {
+  display: inline-block;
+  padding: 0.5rem 1.1rem;
+  background: var(--color-white);
+  border: 2px solid var(--color-sage);
+  border-radius: var(--radius-pill);
+  font-size: 0.93rem;
+  font-weight: 700;
+  color: var(--color-navy);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.chip:hover span {
+  background: var(--color-sage);
+}
+
+.chip input:checked + span {
+  background: var(--color-honey);
+  border-color: var(--color-honey);
+  color: var(--color-ink);
+}
+
+.chip input:focus-visible + span {
+  outline: 3px solid var(--color-green);
+  outline-offset: 2px;
+}
+
+.submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.95rem 1.5rem;
+  background: var(--color-honey);
+  color: var(--color-ink);
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.submit:hover,
+.submit:focus-visible {
+  background: var(--color-honey-dark);
+  transform: translateY(-2px);
+}
+
+/* Visually hidden labels (placeholders act as the visible label) */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .inner {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 2.5rem 1.5rem;
+  }
+
+  .overlay {
+    background: rgba(31, 58, 107, 0.85);
+  }
+}
+
+@media (max-width: 520px) {
+  .details {
+    grid-template-columns: 1fr;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .form {
+    padding: 1.5rem 1.25rem;
+  }
+}
