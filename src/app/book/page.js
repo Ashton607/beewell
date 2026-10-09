@@ -1,6 +1,6 @@
 import { FaCalendarCheck } from "react-icons/fa";
-import BookingFlow from "./Bookingflow";
-import styles from "./Booking.module.css";
+import styles from "@/components/book/Booking.module.css";
+import BookingFlow from "@/components/book/Bookingflow";
 
 export const metadata = {
   title: "Book a Class | BeeWell Infant Spa",
@@ -24,7 +24,7 @@ export default function BookPage() {
         </p>
       </header>
 
-      <BookingFlow />
+    <BookingFlow/>
     </main>
   );
 }
