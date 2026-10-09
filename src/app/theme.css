@@ -1,0 +1,61 @@
+/* Font: Nunito (rounded, friendly, very readable) */
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap");
+
+/* BeeWell Infant Spa theme: colors taken from the poster */
+:root {
+  /* Typography */
+  --font-main: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, Arial,
+    sans-serif;
+
+  /* Backgrounds */
+  --color-cream: #fbf8ec;
+  --color-white: #ffffff;
+
+  /* Brand yellows (honey / bee) */
+  --color-honey: #f6c945;
+  --color-honey-light: #fbe38a;
+  --color-honey-dark: #e0ac1c;
+
+  /* Greens (sage + deep green from "Bond · Relax · Grow") */
+  --color-sage: #cfe3c3;
+  --color-sage-dark: #a8cba0;
+  --color-green: #4f7a5a;
+
+  /* Text */
+  --color-ink: #2b2b2b; /* headings, near-black */
+  --color-navy: #1f3a6b; /* body text */
+
+  /* Accent pastels (benefit icons) */
+  --color-sky: #bfe0f0;
+  --color-peach: #f7b8a8;
+  --color-lilac: #e8b6dc;
+
+  /* Shape + shadow */
+  --radius-pill: 999px;
+  --shadow-soft: 0 4px 16px rgba(43, 43, 43, 0.08);
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-navy);
+  font-family: var(--font-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-main);
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--color-ink);
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
