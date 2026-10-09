@@ -63,7 +63,7 @@ export const metadata = {
     "Discover the benefits of baby massage: bonding, better sleep, digestion support, development and more.",
 };
 
-export default function BenefitsPage() {
+export default function Benefits() {
   return (
     <main className={styles.page}>
       <header className={styles.header}>
