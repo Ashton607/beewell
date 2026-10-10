@@ -197,6 +197,11 @@ export default function BookingFlow() {
   const [timesStatus, setTimesStatus] = useState("idle"); // idle | loading | ready | error
   const [retryCount, setRetryCount] = useState(0);
 
+  // Booking submission
+  const [submitting, setSubmitting] = useState(false);
+  const [bookingError, setBookingError] = useState("");
+  const [emailSent, setEmailSent] = useState(false);
+
   useEffect(() => {
     setToday(startOfDay(new Date()));
   }, []);
@@ -269,10 +274,45 @@ export default function BookingFlow() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // TODO: send the booking to the calendar / email here
-  const confirmBooking = () => {
-    setStage("done");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  // Saves the booking to the calendar and sends the confirmation emails
+  const confirmBooking = async () => {
+    setSubmitting(true);
+    setBookingError("");
+
+    try {
+      const res = await fetch("/api/book", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          location: locationId,
+          date: toISODate(date),
+          time: timeId,
+          ...details,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (res.status === 409) {
+        // Someone took the last spot while this form was open
+        setTimeId(null);
+        setRetryCount((n) => n + 1);
+        setBookingError(
+          data.error ?? "That time was just filled. Please choose another."
+        );
+        setStage("select");
+        return;
+      }
+
+      if (!res.ok) throw new Error(data.error ?? "Booking failed");
+
+      setEmailSent(Boolean(data.emailSent));
+      setStage("done");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (err) {
+      setBookingError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const startOver = () => {
@@ -280,6 +320,8 @@ export default function BookingFlow() {
     setDate(null);
     setTimeId(null);
     setDetails({ name: "", email: "", phone: "" });
+    setBookingError("");
+    setEmailSent(false);
     setStage("select");
   };
 
@@ -302,6 +344,12 @@ export default function BookingFlow() {
             );
           })}
         </ol>
+      )}
+
+      {stage === "select" && bookingError && (
+        <p className={`${styles.errorBox} ${styles.bookingError}`} role="alert">
+          {bookingError}
+        </p>
       )}
 
       {/* 4 panels */}
@@ -496,18 +544,37 @@ export default function BookingFlow() {
             </ul>
           </div>
 
+          {bookingError && (
+            <p className={`${styles.errorBox} ${styles.bookingError}`} role="alert">
+              {bookingError}
+            </p>
+          )}
+
           <div className={styles.confirmActions}>
             <button
               type="button"
               className={styles.secondary}
-              onClick={() => setStage("select")}
+              disabled={submitting}
+              onClick={() => {
+                setBookingError("");
+                setStage("select");
+              }}
             >
               <FaArrowLeft aria-hidden="true" />
               Edit details
             </button>
-            <button type="button" className={styles.primary} onClick={confirmBooking}>
-              <FaCalendarCheck aria-hidden="true" />
-              Confirm and book
+            <button
+              type="button"
+              className={styles.primary}
+              onClick={confirmBooking}
+              disabled={submitting}
+            >
+              {submitting ? (
+                <FaSpinner className={styles.spin} aria-hidden="true" />
+              ) : (
+                <FaCalendarCheck aria-hidden="true" />
+              )}
+              {submitting ? "Booking…" : "Confirm and book"}
             </button>
           </div>
         </section>
@@ -521,8 +588,9 @@ export default function BookingFlow() {
           </span>
           <h2 className={styles.confirmTitle}>You&apos;re booked in!</h2>
           <p className={styles.confirmSub}>
-            Thank you, {details.name}. We&apos;ll send a confirmation to{" "}
-            {details.email}.
+            {emailSent
+              ? `Thank you, ${details.name}. A confirmation has been sent to ${details.email}.`
+              : `Thank you, ${details.name}. Your booking is saved, but we couldn't send the confirmation email. We'll be in touch shortly.`}
           </p>
           <button type="button" className={styles.secondary} onClick={startOver}>
             Book another class

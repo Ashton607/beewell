@@ -622,6 +622,22 @@
   width: auto;
 }
 
+/* ---------- Submit button + booking errors ---------- */
+.primary:disabled,
+.secondary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.bookingError {
+  margin: 0 0 1.25rem;
+}
+
+.bookingError p {
+  margin: 0;
+}
+
 /* ---------- Loading / error states ---------- */
 .statusNote {
   display: flex;
