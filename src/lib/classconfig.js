@@ -7,6 +7,15 @@ export const WEEKS = 5; // classes per booking
 export const PRICE = "R1000"; // for all 5 classes
 export const CLASS_DURATION_MINUTES = 60; // length of each class (adjust to yours)
 
+// Topics shown on the contact form
+export const ENQUIRY_TYPES = [
+  { value: "classes", label: "Classes" },
+  { value: "bookings", label: "Bookings" },
+  { value: "payments", label: "Payments" },
+  { value: "times", label: "Times & Venues" },
+  { value: "other", label: "Other" },
+];
+
 export const LOCATIONS = {
   douglas: {
     id: "douglas",

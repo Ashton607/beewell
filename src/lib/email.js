@@ -13,7 +13,7 @@ const C = {
   navy: "#1f3a6b",
 };
 
-const escapeHtml = (value) =>
+export const escapeHtml = (value) =>
   String(value).replace(
     /[&<>"']/g,
     (c) =>
@@ -31,14 +31,14 @@ function formatDate(dateStr) {
   });
 }
 
-function row(label, value) {
+export function row(label, value) {
   return `<tr>
     <td style="padding:8px 0;color:${C.green};font-weight:bold;">${escapeHtml(label)}</td>
     <td style="padding:8px 0;text-align:right;color:${C.ink};font-weight:bold;">${escapeHtml(value)}</td>
   </tr>`;
 }
 
-function layout(title, intro, bodyHtml) {
+export function layout(title, intro, bodyHtml) {
   return `<!doctype html>
 <html>
   <body style="margin:0;padding:24px 12px;background:${C.cream};font-family:Arial,Helvetica,sans-serif;color:${C.navy};">
