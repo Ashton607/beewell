@@ -6,22 +6,14 @@ import {
   FaInstagram,
   FaFacebookF,
   FaWhatsapp,
-  FaPaperPlane,
 } from "react-icons/fa";
+import ContactForm from "./ContactForm";
 import styles from "./Contact.module.css";
 
 /* ---------- Edit these ---------- */
 const CONTACT_IMAGE = "/contact/contact.webp";
 const EMAIL = "Pennydev1@gmail.com";
 const PHONE = "+27 82 457 6296";
-
-const enquiryTypes = [
-  { value: "classes", label: "Classes" },
-  { value: "bookings", label: "Bookings" },
-  { value: "payments", label: "Payments" },
-  { value: "times", label: "Times & Venues" },
-  { value: "other", label: "Other" },
-];
 
 const socials = [
   { icon: FaInstagram, label: "Instagram", href: "#" },
@@ -30,9 +22,13 @@ const socials = [
 ];
 /* -------------------------------- */
 
+export const metadata = {
+  title: "Contact Us | BeeWell Infant Spa",
+  description:
+    "Get in touch with BeeWell Infant Spa about baby massage classes, bookings and payments in Douglas and Kimberley.",
+};
 
-
-export default function Contact() {
+export default function ContactPage() {
   return (
     <main className={styles.page}>
       <section
@@ -47,11 +43,11 @@ export default function Contact() {
             <h1 className={styles.title}>
               Have Questions?
               <br />
-              <span className={styles.highlight}>I Have Answers</span>
+              <span className={styles.highlight}>We Have Answers</span>
             </h1>
             <p className={styles.lead}>
               Whether you want to know more about our classes, need help with a
-              booking or have a question about payments, send me a message and
+              booking or have a question about payments, send us a message and
               we&apos;ll take it from there.
             </p>
 
@@ -108,79 +104,8 @@ export default function Contact() {
             </ul>
           </div>
 
-          {/* Right: form (design only, no submit logic yet) */}
-          <form className={styles.form}>
-            <h2 className={styles.formTitle}>Send a message</h2>
-            <p className={styles.formSub}>
-              We&apos;re happy to help with anything, big or small.
-            </p>
-
-            <label className={styles.field}>
-              <span className={styles.srOnly}>Name</span>
-              <input
-                type="text"
-                name="name"
-                placeholder="Name"
-                autoComplete="name"
-                required
-              />
-            </label>
-
-            <div className={styles.row}>
-              <label className={styles.field}>
-                <span className={styles.srOnly}>Email address</span>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email address"
-                  autoComplete="email"
-                  required
-                />
-              </label>
-
-              <label className={styles.field}>
-                <span className={styles.srOnly}>Phone number</span>
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="Phone number"
-                  autoComplete="tel"
-                />
-              </label>
-            </div>
-
-            <fieldset className={styles.types}>
-              <legend>Type of enquiry</legend>
-              <div className={styles.chips}>
-                {enquiryTypes.map(({ value, label }, i) => (
-                  <label key={value} className={styles.chip}>
-                    <input
-                      type="radio"
-                      name="enquiryType"
-                      value={value}
-                      defaultChecked={i === 0}
-                    />
-                    <span>{label}</span>
-                  </label>
-                ))}
-              </div>
-            </fieldset>
-
-            <label className={styles.field}>
-              <span className={styles.srOnly}>Message</span>
-              <textarea
-                name="message"
-                rows={5}
-                placeholder="Message"
-                required
-              />
-            </label>
-
-            <button type="submit" className={styles.submit}>
-              <FaPaperPlane aria-hidden="true" />
-              Send message
-            </button>
-          </form>
+          {/* Right: form (client component) */}
+          <ContactForm />
         </div>
       </section>
     </main>
