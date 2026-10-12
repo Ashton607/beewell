@@ -67,7 +67,12 @@ export default function ContactForm() {
       <div className={styles.honeypot} aria-hidden="true">
         <label>
           Website
-          <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+          <input 
+          type="text" 
+          name="website" 
+          tabIndex={-1} 
+          autoComplete="off" 
+          />
         </label>
       </div>
 

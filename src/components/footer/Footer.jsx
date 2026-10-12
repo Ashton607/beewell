@@ -1,0 +1,156 @@
+import Link from "next/link";
+import {
+  FaMapMarkerAlt,
+  FaEnvelope,
+  FaPhoneAlt,
+  FaInstagram,
+  FaFacebookF,
+  FaWhatsapp,
+  FaCalendarCheck,
+  FaChevronRight,
+  FaHeart,
+} from "react-icons/fa";
+import styles from "./Footer.module.css";
+
+/* ---------- Edit these ---------- */
+const LOGO_IMAGE = "/images/logo.png"; // put your logo in /public/images/
+const EMAIL = "your@email.com";
+const PHONE = "+27 00 000 0000";
+const YEAR = 2026;
+const DESIGNER_URL = "https://luxinteractive.co.za";
+
+const pages = [
+  { href: "/", label: "Home" },
+  { href: "/classes", label: "Classes" },
+  { href: "/benefits", label: "Benefits" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+  { href: "/book", label: "Book a class" },
+];
+
+const socials = [
+  { icon: FaInstagram, label: "Instagram", href: "#" },
+  { icon: FaFacebookF, label: "Facebook", href: "#" },
+  { icon: FaWhatsapp, label: "WhatsApp", href: "#" },
+];
+/* -------------------------------- */
+
+export default function Footer() {
+  return (
+    <footer className={styles.footer}>
+      <div className={styles.inner}>
+        {/* Brand */}
+        <div className={styles.brand}>
+          <Link href="/" className={styles.logoLink} aria-label="BeeWell Infant Spa home">
+            <span
+              className={styles.logo}
+              style={{ "--logo-image": `url(${LOGO_IMAGE})` }}
+              role="img"
+              aria-label="BeeWell Infant Spa logo"
+            />
+            <span className={styles.brandName}>
+              <span className={styles.bee}>Bee</span>Well
+              <small>Infant Spa</small>
+            </span>
+          </Link>
+
+          <p className={styles.tagline}>
+            Gentle touch. Big benefits. Baby massage classes for babies from 0
+            – 12 months.
+          </p>
+
+          <Link href="/book" className={styles.cta}>
+            <FaCalendarCheck aria-hidden="true" />
+            Book a class
+          </Link>
+        </div>
+
+        {/* Quick links */}
+        <nav className={styles.column} aria-label="Footer navigation">
+          <h2 className={styles.heading}>Quick links</h2>
+          <ul className={styles.list}>
+            {pages.map((p) => (
+              <li key={p.href}>
+                <Link href={p.href} className={styles.link}>
+                  <FaChevronRight aria-hidden="true" />
+                  {p.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        {/* Class days */}
+        <div className={styles.column}>
+          <h2 className={styles.heading}>Class days</h2>
+          <ul className={styles.list}>
+            <li className={styles.info}>
+              <strong>Douglas</strong>
+              <span>Fridays: 8:00 am, 12:00 pm, 4:30 pm</span>
+            </li>
+            <li className={styles.info}>
+              <strong>Kimberley</strong>
+              <span>Saturdays: 10:00 am</span>
+            </li>
+          </ul>
+        </div>
+
+        {/* Contact */}
+        <div className={styles.column}>
+          <h2 className={styles.heading}>Get in touch</h2>
+          <ul className={styles.list}>
+            <li className={styles.contactItem}>
+              <FaMapMarkerAlt aria-hidden="true" />
+              <span>Douglas and Kimberley, Northern Cape</span>
+            </li>
+            <li className={styles.contactItem}>
+              <FaEnvelope aria-hidden="true" />
+              <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+            </li>
+            <li className={styles.contactItem}>
+              <FaPhoneAlt aria-hidden="true" />
+              <a href={`tel:${PHONE.replace(/\s/g, "")}`}>{PHONE}</a>
+            </li>
+          </ul>
+
+          <ul className={styles.socials} aria-label="Social media">
+            {socials.map(({ icon: Icon, label, href }) => (
+              <li key={label}>
+                <a
+                  href={href}
+                  className={styles.social}
+                  aria-label={label}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Icon aria-hidden="true" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div className={styles.bottom}>
+        <p>
+          &copy; {YEAR} BeeWell Infant Spa. All rights reserved.
+        </p>
+        <p className={styles.made}>
+          Made with <FaHeart aria-hidden="true" /> for little ones
+          <span className={styles.dot} aria-hidden="true">
+            •
+          </span>
+          Designed by{" "}
+          <a
+            href={DESIGNER_URL}
+            className={styles.credit}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Lux Interactive
+          </a>
+        </p>
+      </div>
+    </footer>
+  );
+}

@@ -18,15 +18,9 @@ const PHONE = "+27 82 457 6296";
 const socials = [
   { icon: FaInstagram, label: "Instagram", href: "#" },
   { icon: FaFacebookF, label: "Facebook", href: "#" },
-  { icon: FaWhatsapp, label: "WhatsApp", href: "#" },
+  { icon: FaWhatsapp, label: "WhatsApp", href: "https://wa.me/27824576296" },
 ];
 /* -------------------------------- */
-
-export const metadata = {
-  title: "Contact Us | BeeWell Infant Spa",
-  description:
-    "Get in touch with BeeWell Infant Spa about baby massage classes, bookings and payments in Douglas and Kimberley.",
-};
 
 export default function ContactPage() {
   return (
