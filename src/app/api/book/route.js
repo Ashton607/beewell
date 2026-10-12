@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
 import { getCalendarClient } from "@/lib/googlecalendar";
 import { validateSlot, getAvailability } from "@/lib/availability";
-import { TIMEZONE, CLASS_DURATION_MINUTES } from "@/lib/classconfig";
+import { TIMEZONE, CLASS_DURATION_MINUTES, WEEKS } from "@/lib/classconfig";
 import { sendBookingEmails } from "@/lib/email";
 
 /*
@@ -11,7 +11,7 @@ import { sendBookingEmails } from "@/lib/email";
 
   1. Validates everything on the server (never trust the browser)
   2. Re-checks availability for all 5 weeks
-  3. Creates one calendar event per class (5 events)
+  3. Creates ONE weekly repeating calendar event (5 weeks)
   4. Sends the confirmation emails with Resend
 */
 
@@ -93,46 +93,33 @@ export async function POST(request) {
       );
     }
 
-    // ---- Create the 5 calendar events ----
+    // ---- Create ONE weekly repeating event (first class + 4 more weeks) ----
     const bookingId = randomUUID();
+    const firstDay = classDates[0];
     const endTime = addMinutes(time.id, CLASS_DURATION_MINUTES);
 
-    const results = await Promise.allSettled(
-      classDates.map((day, i) =>
-        calendar.events.insert({
-          calendarId,
-          requestBody: {
-            summary: `${customer.name} - Baby massage (${location.name})`,
-            description: [
-              `Parent: ${customer.name}`,
-              `Email: ${customer.email}`,
-              `Phone: ${customer.phone}`,
-              `Class ${i + 1} of ${classDates.length}`,
-              `Booking ID: ${bookingId}`,
-            ].join("\n"),
-            start: { dateTime: `${day}T${time.id}:00`, timeZone: TIMEZONE },
-            end: { dateTime: `${day}T${endTime}:00`, timeZone: TIMEZONE },
-            // The availability route counts events using these tags
-            extendedProperties: {
-              private: { location: location.id, slot: time.id, bookingId },
-            },
-          },
-        })
-      )
-    );
-
-    // If any class failed to save, undo the ones that did so nothing is half-booked
-    if (results.some((r) => r.status === "rejected")) {
-      const createdIds = results
-        .filter((r) => r.status === "fulfilled")
-        .map((r) => r.value.data.id);
-      await Promise.allSettled(
-        createdIds.map((eventId) =>
-          calendar.events.delete({ calendarId, eventId })
-        )
-      );
-      throw new Error("Could not create every calendar event");
-    }
+    await calendar.events.insert({
+      calendarId,
+      requestBody: {
+        summary: `${customer.name} - Baby massage (${location.name})`,
+        description: [
+          `Parent: ${customer.name}`,
+          `Email: ${customer.email}`,
+          `Phone: ${customer.phone}`,
+          `${WEEKS} weekly classes starting ${firstDay}`,
+          `Booking ID: ${bookingId}`,
+          "",
+          "To cancel this booking, delete the whole series (all events).",
+        ].join("\n"),
+        start: { dateTime: `${firstDay}T${time.id}:00`, timeZone: TIMEZONE },
+        end: { dateTime: `${firstDay}T${endTime}:00`, timeZone: TIMEZONE },
+        recurrence: [`RRULE:FREQ=WEEKLY;COUNT=${WEEKS}`],
+        // The availability route counts bookings using these tags
+        extendedProperties: {
+          private: { location: location.id, slot: time.id, bookingId },
+        },
+      },
+    });
 
     // ---- Send emails (a failed email must not undo a saved booking) ----
     let emailSent = false;

@@ -49,7 +49,9 @@ export function validateSlot(locationId, date) {
   Counts how many parents are booked for each time over the 5 weekly dates
   starting at `date`. The busiest week decides whether a time is full.
 
-  Each booking is saved as one calendar event per class with:
+  Each booking is saved as ONE weekly repeating event (5 weeks). Because we
+  list with singleEvents: true, Google expands it into one instance per week
+  and each instance carries the tags below:
     extendedProperties.private = { location, slot, bookingId }
 */
 export async function getAvailability(
