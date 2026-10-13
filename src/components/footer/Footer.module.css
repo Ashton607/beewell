@@ -231,7 +231,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.4rem 1.25rem;
+  gap: 4rem 1.25rem;
 }
 
 .legalLink {

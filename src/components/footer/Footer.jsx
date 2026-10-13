@@ -13,20 +13,21 @@ import {
 import styles from "./Footer.module.css";
 
 /* ---------- Edit these ---------- */
-const LOGO_IMAGE = "/images/logo.png"; // put your logo in /public/images/
-const EMAIL = "your@email.com";
-const PHONE = "+27 00 000 0000";
+const LOGO_IMAGE = "/hero/logo.jpeg"; // put your logo in /public/images/
+const EMAIL = "pennydev5@gmail.com";
+const PHONE = "+27 82 457 6296";
 const YEAR = 2026;
 const DESIGNER_URL = "https://luxinteractive.co.za";
 
 const pages = [
   { href: "/", label: "Home" },
-  { href: "/classes", label: "Classes" },
-  { href: "/benefits", label: "Benefits" },
+  { href: "/#classes", label: "Classes" },
+  { href: "/#benefits", label: "Benefits" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
   { href: "/book", label: "Book a class" },
 ];
+
 
 const socials = [
   { icon: FaInstagram, label: "Instagram", href: "#" },
