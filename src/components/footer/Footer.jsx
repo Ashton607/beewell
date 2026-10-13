@@ -13,16 +13,16 @@ import {
 import styles from "./Footer.module.css";
 
 /* ---------- Edit these ---------- */
-const LOGO_IMAGE = "/hero/logo.jpeg"; // put your logo in /public/images/
-const EMAIL = "pennydev5@gmail.com";
-const PHONE = "+27 82 457 6296";
+const LOGO_IMAGE = "/images/logo.png"; // put your logo in /public/images/
+const EMAIL = "your@email.com";
+const PHONE = "+27 00 000 0000";
 const YEAR = 2026;
 const DESIGNER_URL = "https://luxinteractive.co.za";
 
 const pages = [
   { href: "/", label: "Home" },
-  { href: "/#classes", label: "Classes" },
-  { href: "/#benefits", label: "Benefits" },
+  { href: "/classes", label: "Classes" },
+  { href: "/benefits", label: "Benefits" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
   { href: "/book", label: "Book a class" },
@@ -135,6 +135,14 @@ export default function Footer() {
         <p>
           &copy; {YEAR} BeeWell Infant Spa. All rights reserved.
         </p>
+        <nav className={styles.legal} aria-label="Legal">
+          <Link href="/terms" className={styles.legalLink}>
+            Terms &amp; Conditions
+          </Link>
+          <Link href="/privacy" className={styles.legalLink}>
+            Privacy Policy
+          </Link>
+        </nav>
         <p className={styles.made}>
           Made with <FaHeart aria-hidden="true" /> for little ones
           <span className={styles.dot} aria-hidden="true">

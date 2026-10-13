@@ -227,6 +227,27 @@
   color: var(--color-honey);
 }
 
+.legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem 1.25rem;
+}
+
+.legalLink {
+  color: var(--color-cream);
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.legalLink:hover,
+.legalLink:focus-visible {
+  color: var(--color-honey-light);
+  text-decoration: underline;
+  text-decoration-color: var(--color-honey);
+}
+
 .credit {
   color: var(--color-cream);
   font-weight: 800;
@@ -262,4 +283,9 @@
     flex-direction: column;
     text-align: center;
   }
+}
+
+/* keeps long emails and addresses from pushing the columns wider */
+.column {
+  min-width: 0;
 }
