@@ -90,7 +90,7 @@ const sections = [
     heading: "Payment, cancellation and rescheduling",
     paragraphs: [
       "The class fee is R1000 for 5 classes.",
-      "[Cancellation, refund, missed-class and rescheduling policy: to be completed by BeeWell Infant Spa before this page is published.]",
+      "[Cancellation, refund, missed class and rescheduling policy: to be completed by BeeWell Infant Spa before this page is published.]",
     ],
   },
   {

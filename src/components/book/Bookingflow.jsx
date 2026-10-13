@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
   FaMapMarkerAlt,
@@ -664,7 +664,8 @@ export default function BookingFlow() {
                       required
                     />
                     <span>
-                      I accept the <a href="/terms" target="_blank" rel="noopener noreferrer" className={styles.termsLink}>Terms and Conditions</a> *
+                    I accept the
+                    <Link href="/terms" className={styles.termsLink}>Terms and Conditions</Link> *
                     </span>
                   </label>
                 </div>
