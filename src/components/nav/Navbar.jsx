@@ -4,6 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import styles from "./Navbar.module.css";
 
+/* ---------- Edit this ---------- */
+const LOGO_IMAGE = "/hero/logo.jpeg"; // put your logo in /public/images/
+/* -------------------------------- */
+
 const links = [
   { href: "/#home", label: "Home" },
   { href: "/#classes", label: "Classes" },
@@ -21,9 +25,12 @@ export default function Navbar() {
     <header className={styles.header}>
       <nav className={styles.nav} aria-label="Main navigation">
         <Link href="/" className={styles.logo} onClick={close}>
-          <span className={styles.logoBee} aria-hidden="true">
-            🐝
-          </span>
+          {/* Your logo sits on top of the gradient placeholder */}
+          <span
+            className={styles.logoImage}
+            style={{ "--logo-image": `url(${LOGO_IMAGE})` }}
+            aria-hidden="true"
+          />
           <span className={styles.logoText}>
             <span className={styles.logoBee2}>Bee</span>
             <span className={styles.logoWell}>Well</span>

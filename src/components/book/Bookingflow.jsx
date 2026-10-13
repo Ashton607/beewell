@@ -664,8 +664,7 @@ export default function BookingFlow() {
                       required
                     />
                     <span>
-                    I accept the
-                    <Link href="/terms" className={styles.termsLink}>Terms and Conditions</Link> *
+                    I accept the <Link href="/terms" className={styles.termsLink}>Terms and Conditions</Link> *
                     </span>
                   </label>
                 </div>
