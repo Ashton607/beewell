@@ -4,14 +4,6 @@ import styles from "./Legal.module.css";
 
 /* ---------- Edit this ---------- */
 const PRIVACY_EMAIL = "pennydev5@gmail.com";
-/* -------------------------------- */
-
-export const metadata = {
-  title: "Privacy Policy | BeeWell Infant Spa",
-  description:
-    "How BeeWell Infant Spa collects, uses and protects your personal information and your baby's information, in line with POPIA.",
-};
-
 const UPDATED = "13 October 2026";
 
 const sections = [
