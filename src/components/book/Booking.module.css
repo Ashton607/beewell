@@ -64,7 +64,6 @@
   color: #8a94aa;
 }
 
-/* connecting line */
 .step:not(:last-child)::after {
   content: "";
   position: absolute;
@@ -260,12 +259,6 @@
   color: var(--color-ink);
 }
 
-.locCard input:focus-visible + .locBody,
-.timeCard input:focus-visible + .timeBody {
-  outline: 3px solid var(--color-green);
-  outline-offset: 2px;
-}
-
 /* ---------- 2. Calendar ---------- */
 .calHead {
   display: flex;
@@ -328,7 +321,7 @@
   font-family: inherit;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #b4bbca; /* greyed out */
+  color: #b4bbca;
   cursor: not-allowed;
 }
 
@@ -432,13 +425,33 @@
   opacity: 0.6;
 }
 
+.subSectionTitle {
+  margin: 1.2rem 0 0.6rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--color-green);
+}
+
+.subSectionTitle:first-of-type {
+  margin-top: 0;
+}
+
 .field {
   display: block;
   margin-bottom: 0.9rem;
 }
 
-.field input {
-  width: 100%;
+.fieldLabel {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-green);
+}
+
+.field input,
+.textarea {
+  width: 95%;
   padding: 0.8rem 1.1rem;
   background: var(--color-cream);
   border: 2px solid var(--color-sage);
@@ -449,14 +462,79 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.field input::placeholder {
+.textarea {
+  resize: vertical;
+}
+
+.field input::placeholder,
+.textarea::placeholder {
   color: #7d8aa3;
 }
 
-.field input:focus {
+.field input:focus,
+.textarea:focus {
   outline: none;
   border-color: var(--color-honey);
   box-shadow: 0 0 0 4px rgba(246, 201, 69, 0.3);
+}
+
+.checkboxField,
+.checkboxGroup {
+  margin-bottom: 0.9rem;
+  padding: 0.9rem 1.1rem;
+  background: var(--color-cream);
+  border: 2px solid var(--color-sage);
+  border-radius: 18px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.checkboxField:hover,
+.checkboxGroup:hover {
+  background: var(--color-sage);
+  border-color: var(--color-sage-dark);
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+.checkboxLabel input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--color-green);
+  cursor: pointer;
+}
+
+.termsLink {
+  color: var(--color-green);
+  text-decoration: underline;
+  font-weight: 800;
+  transition: color 0.2s ease;
+}
+
+.termsLink:hover {
+  color: var(--color-navy);
+}
+
+.groupTitle {
+  margin: 0 0 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-green);
+}
+
+.conditionalBlock {
+  padding: 0.9rem;
+  margin-bottom: 0.9rem;
+  background: rgba(207, 227, 195, 0.25);
+  border-left: 4px solid var(--color-green);
+  border-radius: 0 18px 18px 0;
 }
 
 .srOnly {
@@ -622,7 +700,6 @@
   width: auto;
 }
 
-/* ---------- Submit button + booking errors ---------- */
 .primary:disabled,
 .secondary:disabled {
   opacity: 0.7;
@@ -638,7 +715,6 @@
   margin: 0;
 }
 
-/* ---------- Loading / error states ---------- */
 .statusNote {
   display: flex;
   align-items: center;
@@ -686,7 +762,6 @@
   transform: translateY(-1px);
 }
 
-/* ---------- Responsive ---------- */
 @media (max-width: 800px) {
   .grid {
     grid-template-columns: 1fr;

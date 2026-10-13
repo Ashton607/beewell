@@ -7,30 +7,48 @@ import { sendBookingEmails } from "@/lib/email";
 
 /*
   POST /api/book
-  Body: { location, date, time, name, email, phone }
+  Body: { 
+    location, date, time, 
+    parentName, relationship, phone, email, 
+    babyName, babyDob, preferredName, 
+    hasHealthConditions, medicalNotes, doctorName, doctorPhone, 
+    productConsent, photoConsent, acceptTerms 
+  }
 
-  1. Validates everything on the server (never trust the browser)
+  1. Validates everything on the server
   2. Re-checks availability for all 5 weeks
-  3. Creates ONE weekly repeating calendar event (5 weeks)
+  3. Creates ONE weekly repeating calendar event (5 weeks) with full details
   4. Sends the confirmation emails with Resend
 */
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_PATTERN = /^[+\d][\d\s\-()]{7,19}$/;
 
-function validateCustomer({ name, email, phone }) {
-  if (typeof name !== "string" || name.trim().length < 2 || name.length > 100) {
-    return "Please enter your name.";
+function validateCustomer(body) {
+  if (typeof body.parentName !== "string" || body.parentName.trim().length < 2 || body.parentName.length > 100) {
+    return "Please enter the parent/guardian name.";
+  }
+  if (typeof body.relationship !== "string" || body.relationship.trim().length < 2) {
+    return "Please specify your relationship to the baby.";
   }
   if (
-    typeof email !== "string" ||
-    email.length > 254 ||
-    !EMAIL_PATTERN.test(email.trim())
+    typeof body.email !== "string" ||
+    body.email.length > 254 ||
+    !EMAIL_PATTERN.test(body.email.trim())
   ) {
     return "Please enter a valid email address.";
   }
-  if (typeof phone !== "string" || !PHONE_PATTERN.test(phone.trim())) {
+  if (typeof body.phone !== "string" || !PHONE_PATTERN.test(body.phone.trim())) {
     return "Please enter a valid phone number.";
+  }
+  if (typeof body.babyName !== "string" || body.babyName.trim().length < 2) {
+    return "Please enter the baby's full name.";
+  }
+  if (typeof body.babyDob !== "string" || !body.babyDob.trim()) {
+    return "Please enter the baby's date of birth.";
+  }
+  if (!body.acceptTerms) {
+    return "You must accept the Terms and Conditions to book.";
   }
   return null;
 }
@@ -63,15 +81,26 @@ export async function POST(request) {
     return NextResponse.json({ error: "Unknown class time." }, { status: 400 });
   }
 
-  const customerError = validateCustomer(body);
-  if (customerError) {
-    return NextResponse.json({ error: customerError }, { status: 400 });
+  const validationError = validateCustomer(body);
+  if (validationError) {
+    return NextResponse.json({ error: validationError }, { status: 400 });
   }
 
   const customer = {
-    name: body.name.trim(),
-    email: body.email.trim(),
+    parentName: body.parentName.trim(),
+    relationship: body.relationship.trim(),
     phone: body.phone.trim(),
+    email: body.email.trim(),
+    babyName: body.babyName.trim(),
+    babyDob: body.babyDob.trim(),
+    preferredName: body.preferredName ? body.preferredName.trim() : "",
+    hasHealthConditions: Boolean(body.hasHealthConditions),
+    medicalNotes: body.medicalNotes ? body.medicalNotes.trim() : "None reported",
+    doctorName: body.doctorName ? body.doctorName.trim() : "Not provided",
+    doctorPhone: body.doctorPhone ? body.doctorPhone.trim() : "Not provided",
+    productConsent: Boolean(body.productConsent),
+    photoConsent: Boolean(body.photoConsent),
+    acceptTerms: Boolean(body.acceptTerms),
   };
 
   try {
@@ -101,11 +130,25 @@ export async function POST(request) {
     await calendar.events.insert({
       calendarId,
       requestBody: {
-        summary: `${customer.name} - Baby massage (${location.name})`,
+        summary: `${customer.parentName} & ${customer.babyName} - Baby Massage (${location.name})`,
         description: [
-          `Parent: ${customer.name}`,
+          `--- Parent Details ---`,
+          `Parent: ${customer.parentName} (${customer.relationship})`,
           `Email: ${customer.email}`,
           `Phone: ${customer.phone}`,
+          ``,
+          `--- Baby Details ---`,
+          `Baby Name: ${customer.babyName}${customer.preferredName ? `(Preferred: ${customer.preferredName})` : ""}`,
+          `Date of Birth: ${customer.babyDob}`,
+          `Health Conditions/Allergies Reported: ${customer.hasHealthConditions ? "Yes" : "No"}`,
+          `Health Details: ${customer.medicalNotes}`,
+          `Medical Practitioner: ${customer.doctorName} (${customer.doctorPhone})`,
+          ``,
+          `--- Consents & Terms ---`,
+          `Topical Products Consent: ${customer.productConsent ? "Yes" : "No"}`,
+          `Marketing Photo/Video Consent: ${customer.photoConsent ? "Yes" : "No"}`,
+          `Terms & Conditions Accepted: ${customer.acceptTerms ? "Yes" : "No"}`,
+          ``,
           `${WEEKS} weekly classes starting ${firstDay}`,
           `Booking ID: ${bookingId}`,
           "",
@@ -114,14 +157,13 @@ export async function POST(request) {
         start: { dateTime: `${firstDay}T${time.id}:00`, timeZone: TIMEZONE },
         end: { dateTime: `${firstDay}T${endTime}:00`, timeZone: TIMEZONE },
         recurrence: [`RRULE:FREQ=WEEKLY;COUNT=${WEEKS}`],
-        // The availability route counts bookings using these tags
         extendedProperties: {
           private: { location: location.id, slot: time.id, bookingId },
         },
       },
     });
 
-    // ---- Send emails (a failed email must not undo a saved booking) ----
+    // ---- Send emails ----
     let emailSent = false;
     try {
       const sent = await sendBookingEmails({

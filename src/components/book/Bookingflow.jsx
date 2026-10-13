@@ -63,7 +63,6 @@ const formatLong = (d) =>
   });
 const formatShort = (d) =>
   d.toLocaleDateString("en-ZA", { weekday: "short", day: "numeric", month: "short" });
-// "YYYY-MM-DD" in the browser's local date, for the availability API
 const toISODate = (d) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
     d.getDate()
@@ -75,7 +74,7 @@ const WEEKDAY_HEADERS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 /* ---------- Small building blocks ---------- */
 function Panel({ number, icon: Icon, title, locked, children }) {
   return (
-    <section className={`${styles.panel} ${locked ? styles.locked : ""}`}>
+    <section className={`${styles.panel}${locked ? styles.locked : ""}`}>
       <header className={styles.panelHead}>
         <span className={styles.panelNumber}>{number}</span>
         <h2 className={styles.panelTitle}>
@@ -102,7 +101,7 @@ function Calendar({ today, location, selected, onSelect }) {
 
   const view = new Date(today.getFullYear(), today.getMonth() + offset, 1);
   const daysInMonth = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
-  const lead = (view.getDay() + 6) % 7; // Monday first
+  const lead = (view.getDay() + 6) % 7;
 
   const cells = [
     ...Array.from({ length: lead }, () => null),
@@ -176,7 +175,7 @@ function Calendar({ today, location, selected, onSelect }) {
 
       <p className={styles.calHint}>
         {location
-          ? `Only ${location.dayName} are available in ${location.name}.`
+          ? `Only ${location.dayName} are available in${location.name}.`
           : "Choose a location to see available dates."}
       </p>
     </div>
@@ -189,15 +188,31 @@ export default function BookingFlow() {
   const [locationId, setLocationId] = useState(null);
   const [date, setDate] = useState(null);
   const [timeId, setTimeId] = useState(null);
-  const [details, setDetails] = useState({ name: "", email: "", phone: "" });
-  const [stage, setStage] = useState("select"); // select | confirm | done
+  
+  // State for Parent and Baby details including T&Cs acceptance
+  const [details, setDetails] = useState({
+    parentName: "",
+    relationship: "",
+    phone: "",
+    email: "",
+    babyName: "",
+    babyDob: "",
+    preferredName: "",
+    hasHealthConditions: false,
+    medicalNotes: "",
+    doctorName: "",
+    doctorPhone: "",
+    productConsent: true,
+    photoConsent: false,
+    acceptTerms: false,
+  });
 
-  // Live availability from /api/availability
+  const [stage, setStage] = useState("select");
+
   const [timesData, setTimesData] = useState([]);
-  const [timesStatus, setTimesStatus] = useState("idle"); // idle | loading | ready | error
+  const [timesStatus, setTimesStatus] = useState("idle");
   const [retryCount, setRetryCount] = useState(0);
 
-  // Booking submission
   const [submitting, setSubmitting] = useState(false);
   const [bookingError, setBookingError] = useState("");
   const [emailSent, setEmailSent] = useState(false);
@@ -206,7 +221,6 @@ export default function BookingFlow() {
     setToday(startOfDay(new Date()));
   }, []);
 
-  // Check the live calendar whenever the location or date changes
   useEffect(() => {
     if (!locationId || !date) {
       setTimesData([]);
@@ -237,8 +251,6 @@ export default function BookingFlow() {
 
   const location = LOCATIONS.find((l) => l.id === locationId) ?? null;
   const time = location?.times.find((t) => t.id === timeId) ?? null;
-
-  // Full times (0 spots left) are not shown
   const availableTimes = timesData.filter((t) => !t.full);
 
   const classDates = date
@@ -261,20 +273,29 @@ export default function BookingFlow() {
   const chooseDate = (d) => {
     setDate(d);
     setTimeId(null);
-    setTimesData([]); // avoid flashing the previous date's times
+    setTimesData([]);
     setTimesStatus("loading");
   };
 
-  const updateDetail = (e) =>
-    setDetails((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  const updateDetail = (e) => {
+    const { name, value, type, checked } = e.target;
+    setDetails((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
 
   const goToConfirm = (e) => {
     e.preventDefault();
+    if (!details.acceptTerms) {
+      setBookingError("Please accept the Terms and Conditions to continue.");
+      return;
+    }
+    setBookingError("");
     setStage("confirm");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Saves the booking to the calendar and sends the confirmation emails
   const confirmBooking = async () => {
     setSubmitting(true);
     setBookingError("");
@@ -293,7 +314,6 @@ export default function BookingFlow() {
       const data = await res.json().catch(() => ({}));
 
       if (res.status === 409) {
-        // Someone took the last spot while this form was open
         setTimeId(null);
         setRetryCount((n) => n + 1);
         setBookingError(
@@ -319,7 +339,22 @@ export default function BookingFlow() {
     setLocationId(null);
     setDate(null);
     setTimeId(null);
-    setDetails({ name: "", email: "", phone: "" });
+    setDetails({
+      parentName: "",
+      relationship: "",
+      phone: "",
+      email: "",
+      babyName: "",
+      babyDob: "",
+      preferredName: "",
+      hasHealthConditions: false,
+      medicalNotes: "",
+      doctorName: "",
+      doctorPhone: "",
+      productConsent: true,
+      photoConsent: false,
+      acceptTerms: false,
+    });
     setBookingError("");
     setEmailSent(false);
     setStage("select");
@@ -335,7 +370,7 @@ export default function BookingFlow() {
             const state =
               n < currentStep ? styles.stepDone : n === currentStep ? styles.stepActive : "";
             return (
-              <li key={label} className={`${styles.step} ${state}`}>
+              <li key={label} className={`${styles.step}${state}`}>
                 <span className={styles.stepDot}>
                   {n < currentStep ? <FaCheck aria-hidden="true" /> : n}
                 </span>
@@ -347,12 +382,12 @@ export default function BookingFlow() {
       )}
 
       {stage === "select" && bookingError && (
-        <p className={`${styles.errorBox} ${styles.bookingError}`} role="alert">
+        <p className={`${styles.errorBox}${styles.bookingError}`} role="alert">
           {bookingError}
         </p>
       )}
 
-      {/* 4 panels */}
+      {/* Panels */}
       {stage === "select" && (
         <div className={styles.grid}>
           {/* 1. Location */}
@@ -434,7 +469,7 @@ export default function BookingFlow() {
                         <FaUsers aria-hidden="true" />
                         {t.spotsLeft === 1
                           ? "Last spot!"
-                          : `${t.spotsLeft} of ${CAPACITY} spots left`}
+                          : `${t.spotsLeft} of${CAPACITY} spots left`}
                       </span>
                     </span>
                   </label>
@@ -443,46 +478,196 @@ export default function BookingFlow() {
             )}
           </Panel>
 
-          {/* 4. Customer details */}
-          <Panel number={4} icon={FaUser} title="Your details" locked={!time}>
+          {/* 4. Parent & Baby Details Form */}
+          <Panel number={4} icon={FaUser} title="Parent & Baby Details" locked={!time}>
             <form onSubmit={goToConfirm}>
               <fieldset className={styles.fields} disabled={!time}>
+                
+                {/* Parent / Legal Guardian Section */}
+                <h3 className={styles.subSectionTitle}>Parent / Legal Guardian Details</h3>
+                
                 <label className={styles.field}>
-                  <span className={styles.srOnly}>Name</span>
+                  <span className={styles.srOnly}>Parent/Guardian Full Name</span>
                   <input
                     type="text"
-                    name="name"
-                    placeholder="Name"
+                    name="parentName"
+                    placeholder="Parent/Guardian Full Name *"
                     autoComplete="name"
-                    value={details.name}
+                    value={details.parentName}
                     onChange={updateDetail}
                     required
                   />
                 </label>
+
                 <label className={styles.field}>
-                  <span className={styles.srOnly}>Email address</span>
+                  <span className={styles.srOnly}>Relationship to Baby</span>
                   <input
-                    type="email"
-                    name="email"
-                    placeholder="Email address"
-                    autoComplete="email"
-                    value={details.email}
+                    type="text"
+                    name="relationship"
+                    placeholder="Relationship to Baby (e.g. Mother, Father) *"
+                    value={details.relationship}
                     onChange={updateDetail}
                     required
                   />
                 </label>
+
                 <label className={styles.field}>
-                  <span className={styles.srOnly}>Phone number</span>
+                  <span className={styles.srOnly}>Cellphone Number</span>
                   <input
                     type="tel"
                     name="phone"
-                    placeholder="Phone number"
+                    placeholder="Cellphone Number *"
                     autoComplete="tel"
                     value={details.phone}
                     onChange={updateDetail}
                     required
                   />
                 </label>
+
+                <label className={styles.field}>
+                  <span className={styles.srOnly}>Email Address</span>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email Address *"
+                    autoComplete="email"
+                    value={details.email}
+                    onChange={updateDetail}
+                    required
+                  />
+                </label>
+
+                {/* Baby's Details Section */}
+                <h3 className={styles.subSectionTitle}>Baby&apos;s Details</h3>
+
+                <label className={styles.field}>
+                  <span className={styles.srOnly}>Baby&apos;s Full Name</span>
+                  <input
+                    type="text"
+                    name="babyName"
+                    placeholder="Baby&apos;s Full Name *"
+                    value={details.babyName}
+                    onChange={updateDetail}
+                    required
+                  />
+                </label>
+
+                <label className={styles.field}>
+                  <span className={styles.fieldLabel}>Baby&apos;s Date of Birth *</span>
+                  <input
+                    type="date"
+                    name="babyDob"
+                    value={details.babyDob}
+                    onChange={updateDetail}
+                    required
+                  />
+                </label>
+
+                <label className={styles.field}>
+                  <span className={styles.srOnly}>Preferred Name</span>
+                  <input
+                    type="text"
+                    name="preferredName"
+                    placeholder="Baby&apos;s Preferred Name (Optional)"
+                    value={details.preferredName}
+                    onChange={updateDetail}
+                  />
+                </label>
+
+                {/* Expandable Health Conditions Section */}
+                <div className={styles.checkboxField}>
+                  <label className={styles.checkboxLabel}>
+                    <input
+                      type="checkbox"
+                      name="hasHealthConditions"
+                      checked={details.hasHealthConditions}
+                      onChange={updateDetail}
+                    />
+                    <span>My baby has a health condition, allergy, or special consideration</span>
+                  </label>
+                </div>
+
+                {details.hasHealthConditions && (
+                  <div className={styles.conditionalBlock}>
+                    <label className={styles.field}>
+                      <span className={styles.srOnly}>Health Conditions Details</span>
+                      <textarea
+                        name="medicalNotes"
+                        placeholder="Please describe any health conditions, allergies, or special considerations..."
+                        rows="3"
+                        value={details.medicalNotes}
+                        onChange={updateDetail}
+                        className={styles.textarea}
+                      />
+                    </label>
+
+                    <label className={styles.field}>
+                      <span className={styles.srOnly}>Medical Practitioner Name</span>
+                      <input
+                        type="text"
+                        name="doctorName"
+                        placeholder="Medical Practitioner / Paediatrician Name"
+                        value={details.doctorName}
+                        onChange={updateDetail}
+                      />
+                    </label>
+
+                    <label className={styles.field}>
+                      <span className={styles.srOnly}>Medical Practitioner Contact Number</span>
+                      <input
+                        type="tel"
+                        name="doctorPhone"
+                        placeholder="Medical Practitioner Contact Number"
+                        value={details.doctorPhone}
+                        onChange={updateDetail}
+                      />
+                    </label>
+                  </div>
+                )}
+
+                {/* Consents & T&Cs */}
+                <h3 className={styles.subSectionTitle}>Consents & Terms</h3>
+
+                <div className={styles.checkboxGroup}>
+                  <p className={styles.groupTitle}>Topical Products Consent</p>
+                  <label className={styles.checkboxLabel}>
+                    <input
+                      type="checkbox"
+                      name="productConsent"
+                      checked={details.productConsent}
+                      onChange={updateDetail}
+                    />
+                    <span>Yes, I consent to approved topical products/oils being used</span>
+                  </label>
+                </div>
+
+                <div className={styles.checkboxGroup}>
+                  <p className={styles.groupTitle}>Marketing Photo/Video Consent</p>
+                  <label className={styles.checkboxLabel}>
+                    <input
+                      type="checkbox"
+                      name="photoConsent"
+                      checked={details.photoConsent}
+                      onChange={updateDetail}
+                    />
+                    <span>Yes, I consent to photos/videos being used for marketing and social media</span>
+                  </label>
+                </div>
+
+                <div className={styles.checkboxField}>
+                  <label className={styles.checkboxLabel}>
+                    <input
+                      type="checkbox"
+                      name="acceptTerms"
+                      checked={details.acceptTerms}
+                      onChange={updateDetail}
+                      required
+                    />
+                    <span>
+                      I accept the <a href="/terms" target="_blank" rel="noopener noreferrer" className={styles.termsLink}>Terms and Conditions</a> *
+                    </span>
+                  </label>
+                </div>
 
                 <button type="submit" className={styles.primary}>
                   Continue to confirmation
@@ -517,8 +702,12 @@ export default function BookingFlow() {
               <dd>{time.label}, every {location.dayName.slice(0, -1)}</dd>
             </div>
             <div className={styles.summaryRow}>
-              <dt><FaUser aria-hidden="true" /> Name</dt>
-              <dd>{details.name}</dd>
+              <dt><FaUser aria-hidden="true" /> Parent Name</dt>
+              <dd>{details.parentName} ({details.relationship})</dd>
+            </div>
+            <div className={styles.summaryRow}>
+              <dt><FaUser aria-hidden="true" /> Baby Name</dt>
+              <dd>{details.babyName} (DOB: {details.babyDob})</dd>
             </div>
             <div className={styles.summaryRow}>
               <dt><FaEnvelope aria-hidden="true" /> Email</dt>
@@ -545,7 +734,7 @@ export default function BookingFlow() {
           </div>
 
           {bookingError && (
-            <p className={`${styles.errorBox} ${styles.bookingError}`} role="alert">
+            <p className={`${styles.errorBox}${styles.bookingError}`} role="alert">
               {bookingError}
             </p>
           )}
@@ -580,7 +769,7 @@ export default function BookingFlow() {
         </section>
       )}
 
-      {/* Done (design placeholder) */}
+      {/* Done */}
       {stage === "done" && (
         <section className={styles.done}>
           <span className={styles.doneIcon}>
@@ -589,8 +778,8 @@ export default function BookingFlow() {
           <h2 className={styles.confirmTitle}>You&apos;re booked in!</h2>
           <p className={styles.confirmSub}>
             {emailSent
-              ? `Thank you, ${details.name}. A confirmation has been sent to ${details.email}.`
-              : `Thank you, ${details.name}. Your booking is saved, but we couldn't send the confirmation email. We'll be in touch shortly.`}
+              ? `Thank you, ${details.parentName}. A confirmation has been sent to ${details.email}.`
+              : `Thank you, ${details.parentName}. Your booking is saved, but we couldn't send the confirmation email. We'll be in touch shortly.`}
           </p>
           <button type="button" className={styles.secondary} onClick={startOver}>
             Book another class

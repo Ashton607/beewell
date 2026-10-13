@@ -72,10 +72,10 @@ function customerEmail({ customer, location, time, classDates }) {
 
   const html = layout(
     "Your booking is confirmed",
-    `Hi ${escapeHtml(customer.name)}, thank you for booking! We&rsquo;re looking forward to seeing you and your little one.`,
+    `Hi ${escapeHtml(customer.parentName)}, thank you for booking! We&rsquo;re looking forward to seeing you and your little one.`,
     `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.cream};border-radius:14px;padding:8px 16px;margin-bottom:16px;">
       ${row("Location", location.name)}
-      ${row("Time", `${time.label}, every ${location.dayName}`)}
+      ${row("Time", `${time.label}, every${location.dayName}`)}
       ${row("Classes", `${WEEKS} weekly classes`)}
       ${row("Total", PRICE)}
     </table>
@@ -87,7 +87,7 @@ function customerEmail({ customer, location, time, classDates }) {
   );
 
   const text = [
-    `Hi ${customer.name},`,
+    `Hi ${customer.parentName},`,
     "",
     "Your BeeWell baby massage booking is confirmed.",
     "",
@@ -114,14 +114,23 @@ function ownerEmail({ bookingId, customer, location, time, classDates }) {
     .join("");
 
   const html = layout(
-    "New booking",
-    `${escapeHtml(customer.name)} just booked ${escapeHtml(location.name)}, ${escapeHtml(time.label)}.`,
+    "New booking & Pre-Class Details",
+    `${escapeHtml(customer.parentName)} just booked ${escapeHtml(location.name)}, ${escapeHtml(time.label)}.`,
     `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.cream};border-radius:14px;padding:8px 16px;margin-bottom:16px;">
-      ${row("Name", customer.name)}
+      ${row("Parent Name", customer.parentName)}
+      ${row("Relationship", customer.relationship)}
       ${row("Email", customer.email)}
       ${row("Phone", customer.phone)}
+      ${row("Baby's Name", customer.babyName + (customer.preferredName ? ` (${customer.preferredName})` : ""))}
+      ${row("Baby's DOB", customer.babyDob)}
+      ${row("Health Notes", customer.hasHealthConditions ? customer.medicalNotes : "None reported")}
+      ${row("Doctor Name", customer.doctorName)}
+      ${row("Doctor Phone", customer.doctorPhone)}
+      ${row("Product Consent", customer.productConsent ? "Yes" : "No")}
+      ${row("Photo Consent", customer.photoConsent ? "Yes" : "No")}
+      ${row("T&Cs Accepted", customer.acceptTerms ? "Yes" : "No")}
       ${row("Location", location.name)}
-      ${row("Time", `${time.label}, every ${location.dayName}`)}
+      ${row("Time", `${time.label}, every${location.dayName}`)}
     </table>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.sage};border-radius:14px;padding:8px 16px;margin-bottom:16px;">
       ${dates}
@@ -130,9 +139,16 @@ function ownerEmail({ bookingId, customer, location, time, classDates }) {
   );
 
   const text = [
-    `New booking: ${customer.name}`,
+    `New booking: ${customer.parentName} (${customer.babyName})`,
+    `Relationship: ${customer.relationship}`,
     `Email: ${customer.email}`,
     `Phone: ${customer.phone}`,
+    `Baby DOB: ${customer.babyDob}`,
+    `Health Conditions: ${customer.hasHealthConditions ? customer.medicalNotes : "None reported"}`,
+    `Medical Practitioner: ${customer.doctorName} (${customer.doctorPhone})`,
+    `Product Consent: ${customer.productConsent ? "Yes" : "No"}`,
+    `Photo Consent: ${customer.photoConsent ? "Yes" : "No"}`,
+    `T&Cs Accepted: ${customer.acceptTerms ? "Yes" : "No"}`,
     `${location.name}, ${time.label}, every ${location.dayName}`,
     "",
     ...classDates.map((d, i) => `Week ${i + 1}: ${formatDate(d)}`),
@@ -141,14 +157,13 @@ function ownerEmail({ bookingId, customer, location, time, classDates }) {
   ].join("\n");
 
   return {
-    subject: `New booking: ${customer.name} (${location.name}, ${time.label})`,
+    subject: `New booking: ${customer.parentName} & ${customer.babyName} (${location.name}, ${time.label})`,
     html,
     text,
   };
 }
 
 async function send(resend, message) {
-  // Resend returns { data, error } instead of throwing
   const { error } = await resend.emails.send(message);
   if (error) {
     console.error("Resend error:", error);
