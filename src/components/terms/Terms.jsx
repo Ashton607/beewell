@@ -1,12 +1,8 @@
 import Link from "next/link";
 import { FaFileContract, FaArrowRight } from "react-icons/fa";
-import styles from "./Legal.module.css";
+import styles from "../privacy/Legal.module.css";
 
-export const metadata = {
-  title: "Terms & Conditions | BeeWell Infant Spa",
-  description:
-    "The terms for BeeWell Infant Spa baby massage classes: bookings, health and safety, illness policy, payment, photos and more.",
-};
+
 
 const UPDATED = "13 October 2026";
 
