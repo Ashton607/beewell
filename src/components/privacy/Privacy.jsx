@@ -3,7 +3,7 @@ import { FaShieldAlt, FaArrowRight } from "react-icons/fa";
 import styles from "./Legal.module.css";
 
 /* ---------- Edit this ---------- */
-const PRIVACY_EMAIL = "your@email.com";
+const PRIVACY_EMAIL = "pennydev5@gmail.com";
 /* -------------------------------- */
 
 export const metadata = {
