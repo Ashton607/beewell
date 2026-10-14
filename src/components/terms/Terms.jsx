@@ -4,7 +4,7 @@ import styles from "../privacy/Legal.module.css";
 
 
 
-const UPDATED = "13 October 2026";
+const UPDATED = "14 October 2026";
 
 const sections = [
   {
@@ -89,8 +89,9 @@ const sections = [
   {
     heading: "Payment, cancellation and rescheduling",
     paragraphs: [
-      "The class fee is R1000 for 5 classes.",
-      "[Cancellation, refund, missed class and rescheduling policy: to be completed by BeeWell Infant Spa before this page is published.]",
+      "The class fee is R1000 for 5 weekly classes. Payment is made in full online when you book, and your place is only confirmed once your payment has been received.",
+      "Because your place is reserved for all 5 weeks and group sizes are limited, fees are non-refundable. If you cancel your booking, or you miss or cancel any class, no refund will be given for the classes you do not attend.",
+      "If we have to cancel or reschedule a class, we will tell you as soon as we can and offer you another date.",
     ],
   },
   {
