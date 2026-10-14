@@ -362,7 +362,6 @@ export async function confirmPayment(bookingId, { release = false } = {}) {
     // A failed email must never undo a paid booking
     let emailSent = false;
     try {
-      console.log("EMAIL DATA", JSON.stringify(props, null, 2));
       const sent = await sendBookingEmails({
         bookingId,
         customer: {
