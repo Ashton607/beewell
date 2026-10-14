@@ -17,7 +17,7 @@ export default function Hero() {
 
       <div className={styles.content}>
         <p className={styles.tagline}>
-          <FaHeart aria-hidden="true" /> Gentle touch. Big benefits.
+          <FaHeart aria-hidden="true" /> Gentle touch. Long lasting benefits.
         </p>
 
         <h1 className={styles.title}>

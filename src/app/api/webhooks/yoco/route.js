@@ -6,9 +6,6 @@ import { findBookingIdByCheckout, confirmPayment } from "@/lib/booking";
   POST /api/webhooks/yoco
   Yoco calls this by itself when a payment succeeds, so a booking is still
   confirmed even if the parent closes the browser on Yoco's page.
-
-  Register it in Postman (see the steps in the chat), then put the returned
-  secret in .env.local as YOCO_WEBHOOK_SECRET.
 */
 
 export async function POST(request) {

@@ -248,6 +248,15 @@ export async function createHold({
           parentName: details.parentName,
           parentEmail: details.email,
           parentPhone: details.phone,
+          relationship: details.relationship,
+          babyName: details.babyName,
+          babyDob: details.babyDob,
+          // empty values are left out (Google ignores empty tags)
+          preferredName: details.preferredName || undefined,
+          hasHealthConditions: String(details.hasHealthConditions),
+          medicalNotes: details.medicalNotes || undefined,
+          doctorName: details.doctorName || undefined,
+          doctorPhone: details.doctorPhone || undefined,
           productConsent: String(details.productConsent),
           photoConsent: String(details.photoConsent),
           termsAccepted: "true",
@@ -353,12 +362,32 @@ export async function confirmPayment(bookingId, { release = false } = {}) {
     // A failed email must never undo a paid booking
     let emailSent = false;
     try {
+      console.log("EMAIL DATA", JSON.stringify(props, null, 2));
       const sent = await sendBookingEmails({
         bookingId,
         customer: {
           name: props.parentName,
+          relationship: props.relationship ?? "",
           email: props.parentEmail,
           phone: props.parentPhone,
+        },
+        baby: {
+          name: props.babyName ?? "",
+          preferredName: props.preferredName ?? "",
+          dob: props.babyDob ?? "",
+          ageAtFirstClass: props.babyDob
+            ? formatAge(monthsBetween(props.babyDob, firstDay))
+            : "",
+        },
+        health: {
+          noted: props.hasHealthConditions === "true",
+          notes: props.medicalNotes ?? "",
+          doctorName: props.doctorName ?? "",
+          doctorPhone: props.doctorPhone ?? "",
+        },
+        consents: {
+          productConsent: props.productConsent === "true",
+          photoConsent: props.photoConsent === "true",
         },
         location,
         time,

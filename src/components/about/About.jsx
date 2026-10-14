@@ -29,10 +29,10 @@ const values = [
 
 // Replace these placeholder numbers with your real figures
 const stats = [
-  { icon: FaAward, value: "5+", label: "Years of experience" },
+  { icon: FaAward, value: "5+", label: "Months of experience" },
   { icon: FaCertificate, value: "IAIM", label: "Certified instructor" },
-  { icon: FaUsers, value: "100+", label: "Satisfied parents" },
-  { icon: FaChalkboardTeacher, value: "50+", label: "Classes taught" },
+  { icon: FaUsers, value: "5", label: "Satisfied parents" },
+  { icon: FaChalkboardTeacher, value: "20", label: "Classes taught" },
 ];
 /* -------------------------------- */
 

@@ -1,59 +1,52 @@
 import Link from "next/link";
 import {
   FaHeart,
-  FaMoon,
-  FaShieldAlt,
   FaBrain,
-  FaSmileBeam,
-  FaHandHoldingHeart,
   FaCalendarCheck,
   FaArrowRight,
+  FaRunning,     
+  FaShieldAlt,   
+  FaSmileBeam    
 } from "react-icons/fa";
 import { GiStomach } from "react-icons/gi";
 import styles from "./Benefits.module.css";
 
 const benefits = [
   {
-    icon: FaHeart,
+    icon: FaRunning, 
     color: "honey",
-    title: "Builds a stronger bond",
-    text: "Creates special one-on-one time and deepens connection.",
+    title: "Enhanced Motor Skills",
+    text: "Helps develop coordination and balance, encouraging physical milestones sooner.",
   },
   {
-    icon: FaMoon,
+    icon: FaShieldAlt, 
     color: "sage",
-    title: "Promotes better sleep",
-    text: "Helps your baby feel calm, relaxed and secure.",
+    title: "Immune System Boost",
+    text: "Promotes circulation, stimulating immune responses and reducing illness risk.",
   },
   {
-    icon: GiStomach,
+    icon: FaHeart, 
     color: "peach",
-    title: "Supports digestion",
-    text: "Can help with colic, gas and tummy discomfort.",
+    title: "Emotional Resilience Strength",
+    text: "Builds confidence through secure touch, aiding emotional self-regulation.",
   },
   {
-    icon: FaShieldAlt,
+    icon: GiStomach, 
     color: "sky",
-    title: "Boosts the immune system",
-    text: "Encourages healthy circulation and lymph flow.",
+    title: "Pain Relief",
+    text: "Can ease teething pain, abdominal discomfort and muscle discomfort naturally.",
   },
   {
-    icon: FaBrain,
+    icon: FaBrain, 
     color: "lilac",
-    title: "Supports development",
-    text: "Stimulates the nervous system, encourages muscle tone and improves body awareness.",
+    title: "Sensory Processing",
+    text: "Supports babies in understanding touch, sound, and visual cues.",
   },
   {
-    icon: FaSmileBeam,
+    icon: FaSmileBeam, 
     color: "honey",
-    title: "Reduces stress",
-    text: "Helps release tension and regulates emotions.",
-  },
-  {
-    icon: FaHandHoldingHeart,
-    color: "sage",
-    title: "Encourages physical growth",
-    text: "Supports healthy movement, growth and coordination.",
+    title: "Social Interaction Skills",
+    text: "Encourages babies to engage with others, fostering social confidence.",
   },
 ];
 

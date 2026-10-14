@@ -69,15 +69,33 @@ function customerEmail({ customer, location, time, classDates }) {
   const dates = classDates
     .map((d, i) => row(`Week ${i + 1}`, formatDate(d)))
     .join("");
+  const babyName =
+    customer.babyName +
+    (customer.preferredName ? ` (${customer.preferredName})` : "");
+  const medicalPractitioner = customer.hasHealthConditions
+    ? [customer.doctorName, customer.doctorPhone].filter(Boolean).join(" / ") ||
+      "Not provided"
+    : "Not applicable";
+  const healthNotes = customer.hasHealthConditions
+    ? customer.medicalNotes
+    : "None reported";
 
   const html = layout(
     "Your booking is confirmed",
     `Hi ${escapeHtml(customer.parentName)}, thank you for booking! We&rsquo;re looking forward to seeing you and your little one.`,
     `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.cream};border-radius:14px;padding:8px 16px;margin-bottom:16px;">
       ${row("Location", location.name)}
-      ${row("Time", `${time.label}, every${location.dayName}`)}
+      ${row("Time", `${time.label}, every ${location.dayName}`)}
       ${row("Classes", `${WEEKS} weekly classes`)}
       ${row("Total", PRICE)}
+    </table>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.cream};border-radius:14px;padding:8px 16px;margin-bottom:16px;">
+      ${row("Parent Name", customer.parentName)}
+      ${row("Relationship", customer.relationship)}
+      ${row("Baby's Name", babyName)}
+      ${row("Baby's DOB", formatDate(customer.babyDob))}
+      ${row("Email", customer.email)}
+      ${row("Phone", customer.phone)}
     </table>
     <p style="margin:0 0 6px;font-weight:bold;color:${C.ink};">Your class dates</p>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.sage};border-radius:14px;padding:8px 16px;margin-bottom:20px;">
@@ -93,6 +111,11 @@ function customerEmail({ customer, location, time, classDates }) {
     "",
     `Location: ${location.name}`,
     `Time: ${time.label}, every ${location.dayName}`,
+    `Parent: ${customer.parentName} (${customer.relationship})`,
+    `Baby: ${babyName}`,
+    `Baby's date of birth: ${formatDate(customer.babyDob)}`,
+    `Email: ${customer.email}`,
+    `Phone: ${customer.phone}`,
     `Total: ${PRICE} for ${WEEKS} classes`,
     "",
     "Your class dates:",
@@ -112,6 +135,9 @@ function ownerEmail({ bookingId, customer, location, time, classDates }) {
   const dates = classDates
     .map((d, i) => row(`Week ${i + 1}`, formatDate(d)))
     .join("");
+  const babyName =
+    customer.babyName +
+    (customer.preferredName ? ` (${customer.preferredName})` : "");
 
   const html = layout(
     "New booking & Pre-Class Details",
@@ -121,16 +147,15 @@ function ownerEmail({ bookingId, customer, location, time, classDates }) {
       ${row("Relationship", customer.relationship)}
       ${row("Email", customer.email)}
       ${row("Phone", customer.phone)}
-      ${row("Baby's Name", customer.babyName + (customer.preferredName ? ` (${customer.preferredName})` : ""))}
-      ${row("Baby's DOB", customer.babyDob)}
-      ${row("Health Notes", customer.hasHealthConditions ? customer.medicalNotes : "None reported")}
-      ${row("Doctor Name", customer.doctorName)}
-      ${row("Doctor Phone", customer.doctorPhone)}
+      ${row("Baby's Name", babyName)}
+      ${row("Baby's DOB", formatDate(customer.babyDob))}
+      ${row("Health Notes", healthNotes)}
+      ${row("Medical Practitioner", medicalPractitioner)}
       ${row("Product Consent", customer.productConsent ? "Yes" : "No")}
       ${row("Photo Consent", customer.photoConsent ? "Yes" : "No")}
       ${row("T&Cs Accepted", customer.acceptTerms ? "Yes" : "No")}
       ${row("Location", location.name)}
-      ${row("Time", `${time.label}, every${location.dayName}`)}
+      ${row("Time", `${time.label}, every ${location.dayName}`)}
     </table>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.sage};border-radius:14px;padding:8px 16px;margin-bottom:16px;">
       ${dates}
@@ -143,9 +168,10 @@ function ownerEmail({ bookingId, customer, location, time, classDates }) {
     `Relationship: ${customer.relationship}`,
     `Email: ${customer.email}`,
     `Phone: ${customer.phone}`,
-    `Baby DOB: ${customer.babyDob}`,
-    `Health Conditions: ${customer.hasHealthConditions ? customer.medicalNotes : "None reported"}`,
-    `Medical Practitioner: ${customer.doctorName} (${customer.doctorPhone})`,
+    `Baby: ${babyName}`,
+    `Baby DOB: ${formatDate(customer.babyDob)}`,
+    `Health Conditions: ${healthNotes}`,
+    `Medical Practitioner: ${medicalPractitioner}`,
     `Product Consent: ${customer.productConsent ? "Yes" : "No"}`,
     `Photo Consent: ${customer.photoConsent ? "Yes" : "No"}`,
     `T&Cs Accepted: ${customer.acceptTerms ? "Yes" : "No"}`,

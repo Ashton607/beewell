@@ -36,7 +36,7 @@ const LOCATIONS = [
     weekday: 5, // Friday (Sunday = 0)
     times: [
       { id: "08:00", label: "8:00 am" },
-      { id: "12:00", label: "12:00 pm" },
+      { id: "10:00", label: "10:00 am" },
       { id: "16:30", label: "4:30 pm" },
     ],
   },
@@ -204,7 +204,7 @@ export default function BookingFlow() {
     medicalNotes: "",
     doctorName: "",
     doctorPhone: "",
-    productConsent: true,
+    productConsent: false,
     photoConsent: false,
     acceptTerms: false,
   });
