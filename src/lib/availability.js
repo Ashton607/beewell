@@ -79,6 +79,13 @@ export async function getAvailability(
   const counts = {};
   for (const event of data.items ?? []) {
     if (event.status === "cancelled" || !event.start?.dateTime) continue;
+
+    // An unpaid hold only blocks the spot while the parent has time to pay
+    const props = event.extendedProperties?.private ?? {};
+    if (props.payment === "pending" && Date.now() > Number(props.holdUntil)) {
+      continue;
+    }
+
     // Returned in our timezone, e.g. "2026-10-16T08:00:00+02:00"
     const day = event.start.dateTime.slice(0, 10);
     const time = event.start.dateTime.slice(11, 16);
