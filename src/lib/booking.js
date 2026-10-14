@@ -271,6 +271,20 @@ async function findBooking(client, bookingId) {
   return (data.items ?? []).find((e) => e.status !== "cancelled") ?? null;
 }
 
+// Used by the webhook: Yoco tells us the checkout id, we find our booking id
+export async function findBookingIdByCheckout(checkoutId) {
+  const client = getCalendarClient();
+  const { calendar, calendarId } = client;
+  const { data } = await calendar.events.list({
+    calendarId,
+    privateExtendedProperty: [`checkoutId=${checkoutId}`],
+    singleEvents: false,
+    maxResults: 5,
+  });
+  const event = (data.items ?? []).find((e) => e.status !== "cancelled");
+  return event?.extendedProperties?.private?.bookingId ?? null;
+}
+
 /*
   Asks Yoco what really happened and updates the booking.
   Safe to call more than once (the return page, and the webhook later).
