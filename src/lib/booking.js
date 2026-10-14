@@ -19,8 +19,8 @@ import {
 import { getCheckout } from "./yoco";
 import { sendBookingEmails } from "./email";
 
-export const AMOUNT_IN_CENTS = 100000; // R1000 for the 5 classes
-export const PRICE_LABEL = "R1000";
+export const AMOUNT_IN_CENTS = Number(process.env.TEST_AMOUNT_IN_CENTS) || 100000;
+export const PRICE_LABEL = `R${AMOUNT_IN_CENTS / 100}`;
 export const HOLD_MINUTES = 30; // how long a spot is held while the parent pays
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
