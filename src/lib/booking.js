@@ -430,3 +430,58 @@ export async function confirmPayment(bookingId, { release = false } = {}) {
 
   return { status: "pending", ...who };
 }
+
+/* ---------- 3. Clean up abandoned unpaid holds ---------- */
+
+const CLEANUP_GRACE_MINUTES = 60; // wait this long after the hold ends before touching a booking
+const CLEANUP_MAX_PER_RUN = 50;
+
+/*
+  Finds unpaid holds that ran out long ago and deals with each one:
+    - if Yoco says it WAS paid after all, it is confirmed (and the emails go out)
+    - if it was not paid, the calendar event is deleted
+    - if Yoco is still processing it, or cannot be reached, it is left for the next run
+  Run by a scheduled job (see the cleanup route).
+*/
+export async function cleanupUnpaidHolds() {
+  const client = getCalendarClient();
+  const { calendar, calendarId } = client;
+
+  const { data } = await calendar.events.list({
+    calendarId,
+    privateExtendedProperty: ["payment=pending"],
+    singleEvents: false, // one row per booking, not per week
+    maxResults: 250,
+  });
+
+  const cutoff = Date.now() - CLEANUP_GRACE_MINUTES * 60 * 1000;
+  const stale = (data.items ?? [])
+    .filter((e) => e.status !== "cancelled")
+    .filter((e) => {
+      const holdUntil = Number(e.extendedProperties?.private?.holdUntil);
+      return Number.isFinite(holdUntil) && holdUntil < cutoff;
+    })
+    .slice(0, CLEANUP_MAX_PER_RUN);
+
+  const summary = { checked: stale.length, deleted: 0, confirmed: 0, left: 0 };
+
+  for (const event of stale) {
+    const bookingId = event.extendedProperties?.private?.bookingId;
+    if (!bookingId) {
+      summary.left += 1;
+      continue;
+    }
+    try {
+      // release: true deletes it only when Yoco says the payment did not happen
+      const { status } = await confirmPayment(bookingId, { release: true });
+      if (status === "released") summary.deleted += 1;
+      else if (status === "paid") summary.confirmed += 1;
+      else summary.left += 1;
+    } catch (err) {
+      console.error("Cleanup error for booking", bookingId, err);
+      summary.left += 1;
+    }
+  }
+
+  return summary;
+}
