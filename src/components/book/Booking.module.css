@@ -1039,3 +1039,47 @@
     margin-left: 0;
   }
 }
+
+/* ---------- Payment step ---------- */
+.payNote {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin: 1.25rem 0 0;
+  padding: 0.85rem 1rem;
+  background: var(--color-cream);
+  border-left: 4px solid var(--color-green);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.payNote svg {
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+  color: var(--color-green);
+}
+
+.doneIconWarn {
+  color: #c2452d;
+}
+
+.doneIconWait {
+  color: var(--color-honey-dark);
+}
+
+.statusActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1.25rem;
+}
+
+.statusActions .primary {
+  width: auto;
+}
+
+.statusActions a {
+  text-decoration: none;
+}

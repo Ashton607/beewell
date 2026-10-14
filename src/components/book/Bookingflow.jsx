@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   FaMapMarkerAlt,
   FaCalendarAlt,
@@ -16,8 +16,10 @@ import {
   FaUsers,
   FaEnvelope,
   FaPhoneAlt,
-  FaCalendarCheck,
   FaSpinner,
+  FaCreditCard,
+  FaExclamationTriangle,
+  FaRedo,
 } from "react-icons/fa";
 import styles from "./Booking.module.css";
 
@@ -215,13 +217,64 @@ export default function BookingFlow() {
 
   const [submitting, setSubmitting] = useState(false);
   const [bookingError, setBookingError] = useState("");
-  const [emailSent, setEmailSent] = useState(false);
+  // Filled in after the parent returns from Yoco and the payment is checked
+  const [paidInfo, setPaidInfo] = useState(null);
+  const [returnRef, setReturnRef] = useState("");
+  const returnHandled = useRef(false);
 
   // Shown under the Terms checkbox when the parent tries to continue without accepting
   const [termsError, setTermsError] = useState(false);
 
+  // Asks the server to check a payment (and free the spot if it was cancelled)
+  async function setPayment(ref, release, payment) {
+    setStage("verifying");
+    try {
+      const res = await fetch("/api/checkout/confirm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bookingId: ref, release }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error ?? "Check failed");
+
+      if (data.status === "paid") {
+        setPaidInfo({
+          name: data.parentName,
+          email: data.email,
+          emailSent: Boolean(data.emailSent),
+        });
+        setStage("done");
+      } else if (data.status === "processing" || data.status === "pending") {
+        setStage(release ? (payment === "failed" ? "failed" : "cancelled") : "pending");
+      } else if (data.status === "released" || data.status === "not_found") {
+        setStage(payment === "failed" ? "failed" : "cancelled");
+      } else {
+        setStage("pending");
+      }
+    } catch {
+      setStage("pending");
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   useEffect(() => {
     setToday(startOfDay(new Date()));
+  }, []);
+
+  // The parent comes back from Yoco to /book?payment=...&ref=...
+  // We never trust the address itself: the server asks Yoco what really happened.
+  useEffect(() => {
+    if (returnHandled.current) return;
+    const params = new URLSearchParams(window.location.search);
+    const payment = params.get("payment");
+    const ref = params.get("ref");
+    if (!payment || !ref) return;
+    returnHandled.current = true;
+
+    window.history.replaceState(null, "", "/book");
+    setReturnRef(ref);
+    setPayment(ref, payment !== "success", payment);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -309,7 +362,7 @@ export default function BookingFlow() {
     setBookingError("");
 
     try {
-      const res = await fetch("/api/book", {
+      const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -331,14 +384,14 @@ export default function BookingFlow() {
         return;
       }
 
-      if (!res.ok) throw new Error(data.error ?? "Booking failed");
+      if (!res.ok || !data.redirectUrl) {
+        throw new Error(data.error ?? "We couldn't start the payment.");
+      }
 
-      setEmailSent(Boolean(data.emailSent));
-      setStage("done");
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      // Off to Yoco's secure payment page (keep the button disabled while we leave)
+      window.location.href = data.redirectUrl;
     } catch (err) {
       setBookingError(err.message || "Something went wrong. Please try again.");
-    } finally {
       setSubmitting(false);
     }
   };
@@ -364,7 +417,9 @@ export default function BookingFlow() {
       acceptTerms: false,
     });
     setBookingError("");
-    setEmailSent(false);
+    setPaidInfo(null);
+    setReturnRef("");
+    setSubmitting(false);
     setTermsError(false);
     setStage("select");
   };
@@ -372,7 +427,7 @@ export default function BookingFlow() {
   return (
     <div className={styles.flow}>
       {/* Progress */}
-      {stage !== "done" && (
+      {(stage === "select" || stage === "confirm") && (
         <ol className={styles.steps} aria-label="Booking progress">
           {STEPS.map((label, i) => {
             const n = i + 1;
@@ -732,9 +787,9 @@ export default function BookingFlow() {
       {/* Confirmation panel */}
       {stage === "confirm" && (
         <section className={styles.confirm}>
-          <h2 className={styles.confirmTitle}>Confirm your booking</h2>
+          <h2 className={styles.confirmTitle}>Confirm and pay</h2>
           <p className={styles.confirmSub}>
-            Please check everything below before you book.
+            Please check everything below, then pay securely to lock in your place.
           </p>
 
           <dl className={styles.summary}>
@@ -788,6 +843,11 @@ export default function BookingFlow() {
             </p>
           )}
 
+          <p className={styles.payNote}>
+            <FaLock aria-hidden="true" /> You&apos;ll be taken to Yoco&apos;s
+            secure payment page. Your spot is held for 30 minutes while you pay.
+          </p>
+
           <div className={styles.confirmActions}>
             <button
               type="button"
@@ -810,9 +870,70 @@ export default function BookingFlow() {
               {submitting ? (
                 <FaSpinner className={styles.spin} aria-hidden="true" />
               ) : (
-                <FaCalendarCheck aria-hidden="true" />
+                <FaCreditCard aria-hidden="true" />
               )}
-              {submitting ? "Booking…" : "Confirm and book"}
+              {submitting ? "Taking you to Yoco…" : `Confirm and pay ${PRICE}`}
+            </button>
+          </div>
+        </section>
+      )}
+
+      {/* Checking the payment after coming back from Yoco */}
+      {stage === "verifying" && (
+        <section className={styles.done} aria-live="polite">
+          <span className={`${styles.doneIcon} ${styles.doneIconWait}`}>
+            <FaSpinner className={styles.spin} aria-hidden="true" />
+          </span>
+          <h2 className={styles.confirmTitle}>Checking your payment…</h2>
+          <p className={styles.confirmSub}>Please don&apos;t close this page.</p>
+        </section>
+      )}
+
+      {/* Payment not confirmed yet */}
+      {stage === "pending" && (
+        <section className={styles.done}>
+          <span className={`${styles.doneIcon} ${styles.doneIconWait}`}>
+            <FaClock aria-hidden="true" />
+          </span>
+          <h2 className={styles.confirmTitle}>We&apos;re still confirming your payment</h2>
+          <p className={styles.confirmSub}>
+            This can take a moment. If you completed the payment, tap
+            &quot;Check again&quot;. If it still doesn&apos;t show, please
+            contact us and we&apos;ll sort it out.
+          </p>
+          <div className={styles.statusActions}>
+            <button
+              type="button"
+              className={styles.primary}
+              onClick={() => setPayment(returnRef, false, "success")}
+              disabled={!returnRef}
+            >
+              <FaRedo aria-hidden="true" />
+              Check again
+            </button>
+            <Link href="/contact" className={styles.secondary}>
+              Contact us
+            </Link>
+          </div>
+        </section>
+      )}
+
+      {/* Cancelled or failed */}
+      {(stage === "cancelled" || stage === "failed") && (
+        <section className={styles.done}>
+          <span className={`${styles.doneIcon} ${styles.doneIconWarn}`}>
+            <FaExclamationTriangle aria-hidden="true" />
+          </span>
+          <h2 className={styles.confirmTitle}>
+            {stage === "failed" ? "Your payment didn't go through" : "Payment cancelled"}
+          </h2>
+          <p className={styles.confirmSub}>
+            No money was taken and your booking was not completed. You can
+            start again whenever you&apos;re ready.
+          </p>
+          <div className={styles.statusActions}>
+            <button type="button" className={styles.primary} onClick={startOver}>
+              Start again
             </button>
           </div>
         </section>
@@ -824,11 +945,11 @@ export default function BookingFlow() {
           <span className={styles.doneIcon}>
             <FaCheckCircle aria-hidden="true" />
           </span>
-          <h2 className={styles.confirmTitle}>You&apos;re booked in!</h2>
+          <h2 className={styles.confirmTitle}>Payment received. You&apos;re booked in!</h2>
           <p className={styles.confirmSub}>
-            {emailSent
-              ? `Thank you, ${details.parentName}. A confirmation has been sent to ${details.email}.`
-              : `Thank you, ${details.parentName}. Your booking is saved, but we couldn't send the confirmation email. We'll be in touch shortly.`}
+            {paidInfo?.emailSent
+              ? `Thank you, ${paidInfo.name}. A confirmation has been sent to ${paidInfo.email}.`
+              : `Thank you${paidInfo?.name ? `, ${paidInfo.name}` : ""}. Your payment and booking are saved, but we couldn't send the confirmation email. We'll be in touch shortly.`}
           </p>
           <button type="button" className={styles.secondary} onClick={startOver}>
             Book another class
