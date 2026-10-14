@@ -74,7 +74,7 @@ const WEEKDAY_HEADERS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 /* ---------- Small building blocks ---------- */
 function Panel({ number, icon: Icon, title, locked, children }) {
   return (
-    <section className={`${styles.panel}${locked ? styles.locked : ""}`}>
+    <section className={`${styles.panel} ${locked ? styles.locked : ""}`}>
       <header className={styles.panelHead}>
         <span className={styles.panelNumber}>{number}</span>
         <h2 className={styles.panelTitle}>
@@ -175,7 +175,7 @@ function Calendar({ today, location, selected, onSelect }) {
 
       <p className={styles.calHint}>
         {location
-          ? `Only ${location.dayName} are available in${location.name}.`
+          ? `Only ${location.dayName} are available in ${location.name}.`
           : "Choose a location to see available dates."}
       </p>
     </div>
@@ -216,6 +216,9 @@ export default function BookingFlow() {
   const [submitting, setSubmitting] = useState(false);
   const [bookingError, setBookingError] = useState("");
   const [emailSent, setEmailSent] = useState(false);
+
+  // Shown under the Terms checkbox when the parent tries to continue without accepting
+  const [termsError, setTermsError] = useState(false);
 
   useEffect(() => {
     setToday(startOfDay(new Date()));
@@ -283,14 +286,19 @@ export default function BookingFlow() {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+    // the warning disappears as soon as the Terms are accepted
+    if (name === "acceptTerms" && checked) setTermsError(false);
   };
 
   const goToConfirm = (e) => {
     e.preventDefault();
+    // The Terms must be accepted before moving on
     if (!details.acceptTerms) {
-      setBookingError("Please accept the Terms and Conditions to continue.");
+      setTermsError(true);
+      document.getElementById("acceptTerms")?.focus();
       return;
     }
+    setTermsError(false);
     setBookingError("");
     setStage("confirm");
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -357,6 +365,7 @@ export default function BookingFlow() {
     });
     setBookingError("");
     setEmailSent(false);
+    setTermsError(false);
     setStage("select");
   };
 
@@ -370,7 +379,7 @@ export default function BookingFlow() {
             const state =
               n < currentStep ? styles.stepDone : n === currentStep ? styles.stepActive : "";
             return (
-              <li key={label} className={`${styles.step}${state}`}>
+              <li key={label} className={`${styles.step} ${state}`}>
                 <span className={styles.stepDot}>
                   {n < currentStep ? <FaCheck aria-hidden="true" /> : n}
                 </span>
@@ -382,7 +391,7 @@ export default function BookingFlow() {
       )}
 
       {stage === "select" && bookingError && (
-        <p className={`${styles.errorBox}${styles.bookingError}`} role="alert">
+        <p className={`${styles.errorBox} ${styles.bookingError}`} role="alert">
           {bookingError}
         </p>
       )}
@@ -469,7 +478,7 @@ export default function BookingFlow() {
                         <FaUsers aria-hidden="true" />
                         {t.spotsLeft === 1
                           ? "Last spot!"
-                          : `${t.spotsLeft} of${CAPACITY} spots left`}
+                          : `${t.spotsLeft} of ${CAPACITY} spots left`}
                       </span>
                     </span>
                   </label>
@@ -654,22 +663,62 @@ export default function BookingFlow() {
                   </label>
                 </div>
 
-                <div className={styles.checkboxField}>
+                {/* Terms and Conditions: must be accepted to continue */}
+                <div
+                  className={`${styles.termsBox} ${
+                    details.acceptTerms ? styles.termsAccepted : ""
+                  } ${termsError ? styles.termsInvalid : ""}`}
+                >
                   <label className={styles.checkboxLabel}>
                     <input
+                      id="acceptTerms"
                       type="checkbox"
                       name="acceptTerms"
                       checked={details.acceptTerms}
                       onChange={updateDetail}
-                      required
+                      aria-required="true"
+                      aria-invalid={termsError}
+                      aria-describedby="terms-help"
                     />
                     <span>
-                    I accept the <Link href="/terms" className={styles.termsLink}>Terms and Conditions</Link> *
+                      I have read and accept the{" "}
+                      <Link
+                        href="/terms"
+                        className={styles.termsLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Terms and Conditions
+                      </Link>{" "}
+                      and the{" "}
+                      <Link
+                        href="/privacy"
+                        className={styles.termsLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Privacy Policy
+                      </Link>
+                      . <em className={styles.requiredTag}>Required</em>
                     </span>
                   </label>
+                  <p
+                    id="terms-help"
+                    className={termsError ? styles.termsError : styles.termsHint}
+                    role={termsError ? "alert" : undefined}
+                  >
+                    {termsError
+                      ? "You need to accept the Terms and Conditions before you can continue."
+                      : "You must accept these to continue. The links open in a new tab, so your details are kept."}
+                  </p>
                 </div>
 
-                <button type="submit" className={styles.primary}>
+                <button
+                  type="submit"
+                  className={`${styles.primary} ${
+                    details.acceptTerms ? "" : styles.needsTerms
+                  }`}
+                >
                   Continue to confirmation
                   <FaArrowRight aria-hidden="true" />
                 </button>
@@ -734,7 +783,7 @@ export default function BookingFlow() {
           </div>
 
           {bookingError && (
-            <p className={`${styles.errorBox}${styles.bookingError}`} role="alert">
+            <p className={`${styles.errorBox} ${styles.bookingError}`} role="alert">
               {bookingError}
             </p>
           )}

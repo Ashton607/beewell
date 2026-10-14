@@ -64,6 +64,7 @@
   color: #8a94aa;
 }
 
+/* connecting line */
 .step:not(:last-child)::after {
   content: "";
   position: absolute;
@@ -259,6 +260,12 @@
   color: var(--color-ink);
 }
 
+.locCard input:focus-visible + .locBody,
+.timeCard input:focus-visible + .timeBody {
+  outline: 3px solid var(--color-green);
+  outline-offset: 2px;
+}
+
 /* ---------- 2. Calendar ---------- */
 .calHead {
   display: flex;
@@ -321,7 +328,7 @@
   font-family: inherit;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #b4bbca;
+  color: #b4bbca; /* greyed out */
   cursor: not-allowed;
 }
 
@@ -425,33 +432,13 @@
   opacity: 0.6;
 }
 
-.subSectionTitle {
-  margin: 1.2rem 0 0.6rem;
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: var(--color-green);
-}
-
-.subSectionTitle:first-of-type {
-  margin-top: 0;
-}
-
 .field {
   display: block;
   margin-bottom: 0.9rem;
 }
 
-.fieldLabel {
-  display: block;
-  margin-bottom: 0.3rem;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--color-green);
-}
-
-.field input,
-.textarea {
-  width: 95%;
+.field input {
+  width: 100%;
   padding: 0.8rem 1.1rem;
   background: var(--color-cream);
   border: 2px solid var(--color-sage);
@@ -462,79 +449,14 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.textarea {
-  resize: vertical;
-}
-
-.field input::placeholder,
-.textarea::placeholder {
+.field input::placeholder {
   color: #7d8aa3;
 }
 
-.field input:focus,
-.textarea:focus {
+.field input:focus {
   outline: none;
   border-color: var(--color-honey);
   box-shadow: 0 0 0 4px rgba(246, 201, 69, 0.3);
-}
-
-.checkboxField,
-.checkboxGroup {
-  margin-bottom: 0.9rem;
-  padding: 0.9rem 1.1rem;
-  background: var(--color-cream);
-  border: 2px solid var(--color-sage);
-  border-radius: 18px;
-  transition: border-color 0.2s ease, background 0.2s ease;
-}
-
-.checkboxField:hover,
-.checkboxGroup:hover {
-  background: var(--color-sage);
-  border-color: var(--color-sage-dark);
-}
-
-.checkboxLabel {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--color-ink);
-  cursor: pointer;
-}
-
-.checkboxLabel input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-  accent-color: var(--color-green);
-  cursor: pointer;
-}
-
-.termsLink {
-  color: var(--color-green);
-  text-decoration: underline;
-  font-weight: 800;
-  transition: color 0.2s ease;
-}
-
-.termsLink:hover {
-  color: var(--color-navy);
-}
-
-.groupTitle {
-  margin: 0 0 0.4rem;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--color-green);
-}
-
-.conditionalBlock {
-  padding: 0.9rem;
-  margin-bottom: 0.9rem;
-  background: rgba(207, 227, 195, 0.25);
-  border-left: 4px solid var(--color-green);
-  border-radius: 0 18px 18px 0;
 }
 
 .srOnly {
@@ -700,6 +622,7 @@
   width: auto;
 }
 
+/* ---------- Submit button + booking errors ---------- */
 .primary:disabled,
 .secondary:disabled {
   opacity: 0.7;
@@ -715,6 +638,7 @@
   margin: 0;
 }
 
+/* ---------- Loading / error states ---------- */
 .statusNote {
   display: flex;
   align-items: center;
@@ -762,6 +686,7 @@
   transform: translateY(-1px);
 }
 
+/* ---------- Responsive ---------- */
 @media (max-width: 800px) {
   .grid {
     grid-template-columns: 1fr;
@@ -792,5 +717,325 @@
 
   .summaryRow dd {
     text-align: left;
+  }
+}
+
+/* ---------- Parent & baby details panel (full width, two columns) ---------- */
+.panelWide {
+  grid-column: 1 / -1;
+}
+
+.fields {
+  min-width: 0;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+  margin-bottom: 0.5rem;
+}
+
+.detailCol {
+  min-width: 0;
+}
+
+/* dashed divider between the parent and baby columns */
+.detailCol + .detailCol {
+  padding-left: 2.5rem;
+  border-left: 3px dashed var(--color-sage);
+}
+
+.subSectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 1.1rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 3px solid var(--color-honey-light);
+  font-size: 1.1rem;
+  color: var(--color-ink);
+}
+
+/* sits above the consent boxes, below the two columns */
+.detailGrid + .subSectionTitle {
+  margin-top: 1.5rem;
+}
+
+.fieldLabel {
+  display: block;
+  margin: 0 0 0.35rem 0.2rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--color-navy);
+}
+
+.field textarea,
+.textarea {
+  display: block;
+  width: 100%;
+  min-height: 96px;
+  padding: 0.8rem 1.1rem;
+  background: var(--color-cream);
+  border: 2px solid var(--color-sage);
+  border-radius: 18px;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-navy);
+  resize: vertical;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field textarea::placeholder {
+  color: #7d8aa3;
+}
+
+.field textarea:focus {
+  outline: none;
+  border-color: var(--color-honey);
+  box-shadow: 0 0 0 4px rgba(246, 201, 69, 0.3);
+}
+
+/* date inputs: keep the same height and look as the text inputs */
+.field input[type="date"] {
+  min-height: 3.05rem;
+}
+
+/* ---------- Checkboxes: health condition + consents ---------- */
+.checkboxField,
+.checkboxGroup {
+  margin-bottom: 0.9rem;
+  padding: 0.85rem 1.1rem;
+  background: var(--color-cream);
+  border: 2px solid var(--color-sage);
+  border-radius: 18px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+/* highlight a box once it is ticked (supported browsers) */
+.checkboxField:has(input:checked),
+.checkboxGroup:has(input:checked) {
+  background: var(--color-honey-light);
+  border-color: var(--color-honey);
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-navy);
+  cursor: pointer;
+}
+
+.checkboxLabel input {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-top: 0.1rem;
+  accent-color: var(--color-green);
+  cursor: pointer;
+}
+
+.groupTitle {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--color-green);
+}
+
+/* extra health fields that appear when the box above is ticked */
+.conditionalBlock {
+  margin: 0 0 0.9rem;
+  padding-left: 1rem;
+  border-left: 4px solid var(--color-honey);
+  animation: reveal 0.25s ease;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.consentGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.consentGrid .checkboxGroup {
+  margin-bottom: 0;
+}
+
+.submitWrap {
+  max-width: 420px;
+  margin: 1.75rem auto 0;
+}
+
+/* ---------- Details panel: tablet and mobile ---------- */
+@media (max-width: 800px) {
+  .detailGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .detailCol + .detailCol {
+    padding-left: 0;
+    border-left: none;
+    padding-top: 1.75rem;
+    border-top: 3px dashed var(--color-sage);
+  }
+
+  .consentGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .conditionalBlock {
+    padding-left: 0.75rem;
+  }
+}
+
+/* ---------- Terms & Conditions (must be accepted to continue) ---------- */
+.termsBox {
+  margin: 0 0 1.25rem;
+  padding: 1rem 1.15rem;
+  background: var(--color-cream);
+  border: 3px solid var(--color-honey);
+  border-radius: 18px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+/* ticked: calm green */
+.termsAccepted {
+  background: #eef6e8;
+  border-color: var(--color-green);
+}
+
+/* tried to continue without ticking: clear warning */
+.termsInvalid {
+  background: #fdeee9;
+  border-color: #c2452d;
+  animation: termsShake 0.4s ease;
+}
+
+.termsBox .checkboxLabel input {
+  outline-offset: 3px;
+}
+
+.termsInvalid .checkboxLabel input {
+  outline: 3px solid #c2452d;
+}
+
+.requiredTag {
+  display: inline-block;
+  margin-left: 0.3rem;
+  padding: 0.1rem 0.6rem;
+  background: var(--color-honey);
+  color: var(--color-ink);
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.termsAccepted .requiredTag {
+  background: var(--color-green);
+  color: var(--color-white);
+}
+
+.termsInvalid .requiredTag {
+  background: #c2452d;
+  color: var(--color-white);
+}
+
+.termsLink {
+  color: var(--color-green);
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-color: var(--color-honey-dark);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.termsLink:hover,
+.termsLink:focus-visible {
+  color: var(--color-ink);
+  background: var(--color-honey-light);
+  border-radius: 4px;
+}
+
+.termsHint,
+.termsError {
+  margin: 0.7rem 0 0 2.2rem;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.termsHint {
+  font-weight: 600;
+  color: var(--color-green);
+}
+
+.termsError {
+  font-weight: 800;
+  color: #a63a22;
+}
+
+.termsError::before {
+  content: "!";
+  display: inline-grid;
+  place-items: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-right: 0.45rem;
+  background: #c2452d;
+  color: var(--color-white);
+  border-radius: 50%;
+  font-size: 0.8rem;
+  line-height: 1;
+}
+
+/* the Continue button looks "waiting" until the Terms are accepted */
+.needsTerms {
+  opacity: 0.65;
+}
+
+.needsTerms:hover,
+.needsTerms:focus-visible {
+  transform: none;
+}
+
+@keyframes termsShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .termsInvalid {
+    animation: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .termsHint,
+  .termsError {
+    margin-left: 0;
   }
 }
