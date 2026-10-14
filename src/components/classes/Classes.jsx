@@ -17,7 +17,7 @@ const locations = [
     name: "Douglas",
     theme: "honey",
     day: "Fridays",
-    times: ["8:00 am", "12:00 pm", "4:30 pm"],
+    times: ["8:00 am", "10:00 am", "4:30 pm"],
     timesNote: "3 classes every Friday",
     steps: [
       {

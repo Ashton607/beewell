@@ -17,7 +17,7 @@ const sections = [
   {
     heading: "Bookings and your place",
     list: [
-      "A booking is for 5 weekly classes at the same time every week: Fridays in Douglas (8:00 am, 12:00 pm or 4:30 pm) or Saturdays in Kimberley (10:00 am).",
+      "A booking is for 5 weekly classes at the same time every week: Fridays in Douglas (8:00 am, 10:00 am or 4:30 pm) or Saturdays in Kimberley (10:00 am).",
       "Each class group is made up of a maximum of 5 parents, so everyone gets individual attention.",
       "Once you choose a time, your place is reserved at that time for all 5 weeks.",
       "The fee is R1000 for the 5 classes.",

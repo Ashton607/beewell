@@ -87,7 +87,7 @@ export default function Footer() {
           <ul className={styles.list}>
             <li className={styles.info}>
               <strong>Douglas</strong>
-              <span>Fridays: 8:00 am, 12:00 pm, 4:30 pm</span>
+              <span>Fridays: 8:00 am, 10:00 am, 4:30 pm</span>
             </li>
             <li className={styles.info}>
               <strong>Kimberley</strong>
