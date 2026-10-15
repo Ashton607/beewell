@@ -182,3 +182,109 @@
     text-align: center;
   }
 }
+
+/* =====================================================
+   Mobile menu animations (only when the menu icon is pressed)
+   The menu is display:none until opened, so these play
+   fresh every time it opens. Desktop is not affected.
+   ===================================================== */
+
+@media (max-width: 800px) {
+  .header {
+    --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* the menu icon springs when pressed, and its lines bounce into the X */
+  .toggle {
+    transition: transform 0.35s var(--bounce);
+  }
+
+  .toggle:active {
+    transform: scale(0.88);
+  }
+
+  .bar {
+    transition:
+      transform 0.45s var(--bounce),
+      opacity 0.25s ease;
+  }
+
+  /* the panel drops down with a little overshoot */
+  .links.open {
+    transform-origin: top center;
+    animation: menuDrop 0.55s var(--bounce);
+  }
+
+  /* each menu item bounces in one after another */
+  .links.open > li {
+    animation: itemIn 0.6s var(--bounce) backwards;
+  }
+
+  .links.open > li:nth-child(1) { animation-delay: 0.08s; }
+  .links.open > li:nth-child(2) { animation-delay: 0.15s; }
+  .links.open > li:nth-child(3) { animation-delay: 0.22s; }
+  .links.open > li:nth-child(4) { animation-delay: 0.29s; }
+  .links.open > li:nth-child(5) { animation-delay: 0.36s; }
+  .links.open > li:nth-child(6) { animation-delay: 0.43s; }
+  .links.open > li:nth-child(7) { animation-delay: 0.5s; }
+
+  /* springy press feedback on links and the button */
+  .link,
+  .cta {
+    transition:
+      transform 0.35s var(--bounce),
+      background 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .link:active,
+  .cta:active {
+    transform: scale(0.95);
+  }
+
+  /* the Book button gets a soft glowing ring once the menu is open */
+  .links.open .cta {
+    animation: ring 2.4s ease-out 0.9s infinite;
+  }
+}
+
+@keyframes menuDrop {
+  from {
+    opacity: 0;
+    transform: translateY(-18px) scaleY(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+@keyframes itemIn {
+  from {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes ring {
+  0% {
+    box-shadow: var(--shadow-soft), 0 0 0 0 rgba(246, 201, 69, 0.65);
+  }
+  70%,
+  100% {
+    box-shadow: var(--shadow-soft), 0 0 0 14px rgba(246, 201, 69, 0);
+  }
+}
+
+/* people who prefer less motion get no animation */
+@media (prefers-reduced-motion: reduce) {
+  .header *,
+  .header {
+    animation: none !important;
+    transition: none !important;
+  }
+}

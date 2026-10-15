@@ -68,23 +68,49 @@
   opacity: 0.9;
 }
 
-.cta {
+/* Second logo: IAIM accreditation (the whole block is one link) */
+.iaim {
   display: inline-flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 0.6rem;
-  padding: 0.7rem 1.4rem;
-  background: var(--color-honey);
-  color: var(--color-ink);
-  border-radius: var(--radius-pill);
-  font-weight: 800;
+  color: var(--color-white);
   text-decoration: none;
-  transition: background 0.2s ease, transform 0.2s ease;
 }
 
-.cta:hover,
-.cta:focus-visible {
-  background: var(--color-honey-dark);
+/* Your IAIM logo sits on top of the gradient placeholder */
+.iaimLogo {
+  width: 72px;
+  height: 72px;
+  background-color: var(--color-white);
+  background-image: var(--iaim-image),
+    linear-gradient(135deg, var(--color-sage), var(--color-honey-light));
+  background-size: contain, cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 3px solid var(--color-honey);
+  border-radius: 18px;
+  transition: transform 0.2s ease;
+}
+
+.iaimText {
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: var(--color-sage);
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.iaim:hover .iaimLogo,
+.iaim:focus-visible .iaimLogo {
   transform: translateY(-2px);
+}
+
+.iaim:hover .iaimText,
+.iaim:focus-visible .iaimText {
+  color: var(--color-honey);
+  border-bottom-color: var(--color-honey);
 }
 
 /* ---------- Columns ---------- */
@@ -231,7 +257,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 4rem 1.25rem;
+  gap: 0.4rem 1.25rem;
 }
 
 .legalLink {

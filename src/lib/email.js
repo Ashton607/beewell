@@ -68,7 +68,7 @@ export function layout(title, intro, bodyHtml) {
       </tr>
       <tr>
         <td style="background:${C.sage};padding:14px 24px;text-align:center;font-size:13px;color:${C.green};">
-          Gentle touch. Big benefits. Bond &bull; Relax &bull; Grow
+          Nurturing touch. Bond &bull; Relax &bull; Grow
         </td>
       </tr>
     </table>

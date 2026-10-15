@@ -61,11 +61,11 @@ export default function Benefits() {
     <main className={styles.page} id="benefits">
       <header className={styles.header}>
         <p className={styles.eyebrow}>
-          <FaHeart aria-hidden="true" /> Gentle touch. Big benefits.
+          <FaHeart aria-hidden="true" /> A Path to Health, Happiness, and Connection.
         </p>
         <h1 className={styles.title}>
           The <span className={styles.highlight}>benefits</span> of baby
-          massage
+          massages
         </h1>
         <p className={styles.motto}>
           <span>Bond</span>

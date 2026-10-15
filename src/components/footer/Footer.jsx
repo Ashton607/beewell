@@ -6,14 +6,15 @@ import {
   FaInstagram,
   FaFacebookF,
   FaWhatsapp,
-  FaCalendarCheck,
   FaChevronRight,
   FaHeart,
 } from "react-icons/fa";
 import styles from "./Footer.module.css";
 
 /* ---------- Edit these ---------- */
-const LOGO_IMAGE = "/hero/logo.jpeg"; // put your logo in /public/images/
+const LOGO_IMAGE = "/hero/logo.jpeg"; 
+const IAIM_LOGO = "/hero/IAIM.jpg"; 
+const IAIM_URL = "https://iaimsa.co.za"; 
 const EMAIL = "pennydev5@gmail.com";
 const PHONE = "+27 82 457 6296";
 const YEAR = 2026;
@@ -21,18 +22,17 @@ const DESIGNER_URL = "https://luxinteractive.co.za";
 
 const pages = [
   { href: "/", label: "Home" },
-  { href: "/#classes", label: "Classes" },
-  { href: "/#benefits", label: "Benefits" },
+  { href: "/classes", label: "Classes" },
+  { href: "/benefits", label: "Benefits" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
   { href: "/book", label: "Book a class" },
 ];
 
-
 const socials = [
-  { icon: FaInstagram, label: "Instagram", href: "#" },
-  { icon: FaFacebookF, label: "Facebook", href: "#" },
-  { icon: FaWhatsapp, label: "WhatsApp", href: "#" },
+  { icon: FaInstagram, label: "Instagram", href: "https://www.instagram.com/penny.seabrook.7?cplk=MW5wc2FrdWN3MWdjeQ%3D%3D" },
+  { icon: FaFacebookF, label: "Facebook", href: "https://www.facebook.com/people/BeeWell-Infant-Spa/100065337464162" },
+  { icon: FaWhatsapp, label: "WhatsApp", href: "https://wa.me/27824576296" },
 ];
 /* -------------------------------- */
 
@@ -56,14 +56,25 @@ export default function Footer() {
           </Link>
 
           <p className={styles.tagline}>
-            Nurturing touch. Bonding. Baby massage classes for babies from 0
+            Gentle touch. Big benefits. Baby massage classes for babies from 0
             – 12 months.
           </p>
 
-          <Link href="/book" className={styles.cta}>
-            <FaCalendarCheck aria-hidden="true" />
-            Book a class
-          </Link>
+          <a
+            href={IAIM_URL}
+            className={styles.iaim}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="IAIM Accredited (opens the IAIM website in a new tab)"
+          >
+            <span
+              className={styles.iaimLogo}
+              style={{ "--iaim-image": `url(${IAIM_LOGO})` }}
+              role="img"
+              aria-label="IAIM logo"
+            />
+            <span className={styles.iaimText}>IAIM Accredited</span>
+          </a>
         </div>
 
         {/* Quick links */}

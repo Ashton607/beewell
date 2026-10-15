@@ -1083,3 +1083,68 @@
 .statusActions a {
   text-decoration: none;
 }
+/* ---------- Layout fixes: details form width, spacing and pay note ---------- */
+
+/* stop grid panels from being pushed wider than their column */
+.grid > .panel {
+  min-width: 0;
+}
+
+/* the details panel (4th) uses the full width so the fields have room */
+.grid > .panel:nth-child(4) {
+  grid-column: 1 / -1;
+}
+
+/* keep the form a comfortable width and centred inside that wide panel */
+.fields {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* padding and borders now count inside the width, so nothing spills over */
+.field input,
+.field textarea,
+.textarea,
+.checkboxField,
+.checkboxGroup,
+.termsBox,
+.conditionalBlock {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.field input {
+  display: block;
+  min-width: 0;
+}
+
+/* the Continue button keeps the same width as the fields above it */
+.fields .primary {
+  box-sizing: border-box;
+}
+
+/* Confirm and pay: space between the note and the buttons */
+.payNote {
+  margin: 1.25rem 0 1.5rem;
+}
+
+.payNote svg {
+  flex-shrink: 0;
+}
+
+.confirmActions {
+  align-items: stretch;
+}
+
+.confirmActions .primary,
+.confirmActions .secondary {
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+@media (max-width: 520px) {
+  .confirmActions .primary,
+  .confirmActions .secondary {
+    flex: 1 1 100%;
+  }
+}

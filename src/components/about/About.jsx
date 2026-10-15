@@ -56,16 +56,19 @@ export default function AboutPage() {
             <span className={styles.highlight}>{INSTRUCTOR_NAME}</span>
           </h1>
 
+          <h2 className={styles.subtitle}>
+            <span className={styles.highlight}>The Life Changing Benefits of Infant Massage for Babies, Parents, and Families</span>
+          </h2>
+          
           <p>
-            BeeWell Infant Spa began with a simple belief: that gentle,
-            loving touch can make a big difference in the first year of a
-            baby&apos;s life. I wanted to create a calm space where parents
-            can slow down, connect with their little ones and feel confident
-            in their own hands.
+            Infant massage is more than just gentle touch, it&apos;s a powerful tool that strengthens 
+            the bond between parent and baby, promoting emotional security and overall well being. 
+            Through rhythmic strokes and nurturing interaction, babies experience calmness, relaxation, 
+            and improved sleep patterns.
           </p>
 
           <p>
-            To do this properly, I trained with the{" "}
+            Research backed and globally recognised, the {" "}
             <a
               href={IAIM_URL}
               className={styles.storyLink}
@@ -75,19 +78,40 @@ export default function AboutPage() {
               International Association of Infant Massage
               <FaExternalLinkAlt aria-hidden="true" />
             </a>
-            , where I learned how to become a certified infant massage
-            instructor. That training taught me not only the techniques, but
-            how to guide parents with patience, care and respect for every
-            baby&apos;s unique needs.
+           , program helps soothe colic, enhance digestion, and support cognitive and motor development. 
+           By incorporating infant massage into daily routines, parents create a safe and loving space 
+           that fosters trust and connection for years to come.
           </p>
 
           <p>
-            Today I teach baby massage classes in Douglas and Kimberley, in
-            small groups of 5 parents so everyone gets individual attention.
-            Every class is about bonding, relaxing and growing together, and
-            there is nothing I enjoy more than watching parents and babies
-            settle into it.
+            Infant massage offers a world of benefits for babies, parents, and primary caregivers, 
+            combining ancient wisdom with modern research. The IAIM program promotes relaxation, 
+            interaction, stimulation, and relief, supporting emotional and physical development while 
+            strengthening family bonds.
           </p>
+
+          <ul className={styles.benefitList}>
+          <li>
+          <strong>Relaxation:</strong> Calms babies, promotes sleep, reduces overall stress.
+          </li>
+          <li>
+          <strong>Interaction:</strong> Builds strong bonds through gentle, nurturing touch.
+          </li>
+          <li>
+          <strong>Stimulation:</strong> Enhances development, improves digestion.
+          </li>
+          <li>
+          <strong>Relief:</strong> Soothes colic, gas, and general physical discomfort.
+          </li>
+          </ul>
+
+          <p>
+          Classes are kept small (5 moms and babies) to ensure the overall experience is pleasant and 
+          relaxing. Classes are once a week for 5 weeks to assist moms in repetition of the strokes.
+          I am Penny De Villiers (nee Seabrook) and I am a qualified International Massage Instructor and would 
+          love to share my knowledge with you.
+          </p>
+
         </div>
 
         <div className={styles.imageWrap}>

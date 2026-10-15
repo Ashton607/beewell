@@ -16,8 +16,8 @@ const EMAIL = "Pennydev1@gmail.com";
 const PHONE = "+27 82 457 6296";
 
 const socials = [
-  { icon: FaInstagram, label: "Instagram", href: "#" },
-  { icon: FaFacebookF, label: "Facebook", href: "#" },
+  { icon: FaInstagram, label: "Instagram", href: "https://www.instagram.com/penny.seabrook.7?cplk=MW5wc2FrdWN3MWdjeQ%3D%3D" },
+  { icon: FaFacebookF, label: "Facebook", href: "https://www.facebook.com/people/BeeWell-Infant-Spa/100065337464162" },
   { icon: FaWhatsapp, label: "WhatsApp", href: "https://wa.me/27824576296" },
 ];
 /* -------------------------------- */
@@ -37,12 +37,12 @@ export default function ContactPage() {
             <h1 className={styles.title}>
               Have Questions?
               <br />
-              <span className={styles.highlight}>We Have Answers</span>
+              <span className={styles.highlight}>I Have Answers</span>
             </h1>
             <p className={styles.lead}>
-              Whether you want to know more about our classes, need help with a
-              booking or have a question about payments, send us a message and
-              we&apos;ll take it from there.
+              Whether you want to know more about my classes, need help with a
+              booking or have a question about payments, send me a message and
+              I&apos;ll take it from there.
             </p>
 
             <div className={styles.details}>
