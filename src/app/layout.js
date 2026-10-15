@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "BeeWell Infant Spa",
-  description: "Gentle touch. Big benefits. Baby massage classes in Douglas and Kimberley.Book Now.",
+  description: "Certified baby massage classes in Douglas and Kimberley, Northern Cape. Easy online appointment booking for parents seeking gentle care & bonding. Book now!",
 };
 
 export default function RootLayout({ children }) {

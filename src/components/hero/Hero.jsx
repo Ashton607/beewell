@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FaCalendarCheck, FaArrowRight, FaHeart, FaUsers } from "react-icons/fa";
 import { GiSprout } from "react-icons/gi";
+import { FaLocationDot } from "react-icons/fa6";
 import styles from "./Hero.module.css";
 
 // Replace this with your own image (put the file in /public/images/)
@@ -57,6 +58,9 @@ export default function Hero() {
           </li>
           <li>
             <GiSprout aria-hidden="true" /> R1000 for 5 classes
+          </li>
+          <li>
+            <FaLocationDot aria-hidden="true" /> Northern Cape
           </li>
         </ul>
       </div>

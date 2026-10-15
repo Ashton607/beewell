@@ -5,7 +5,7 @@ import BookingFlow from "@/components/book/Bookingflow";
 export const metadata = {
   title: "Book a Class | BeeWell Infant Spa",
   description:
-    "Book your baby massage class in Douglas or Kimberley. Choose your location, date and time in a few easy steps.",
+    "Book your baby massage class in Douglas or Kimberley online. Choose your location, date, and time in a few easy steps. Secure your spot today!",
 };
 
 export default function BookPage() {
