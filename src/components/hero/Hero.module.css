@@ -319,6 +319,7 @@
 .facts li:nth-child(1) { animation-delay: 1.05s, 1.8s; }
 .facts li:nth-child(2) { animation-delay: 1.2s, 2.4s; }
 .facts li:nth-child(3) { animation-delay: 1.35s, 3s; }
+.facts li:nth-child(4) { animation-delay: 1.5s, 3.6s; }
 
 /* ---------- Keyframes ---------- */
 @keyframes rise {
