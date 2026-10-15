@@ -309,6 +309,10 @@
     flex-direction: column;
     text-align: center;
   }
+
+  .made {
+    justify-content: center;
+  }
 }
 
 /* keeps long emails and addresses from pushing the columns wider */

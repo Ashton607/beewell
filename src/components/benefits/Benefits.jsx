@@ -6,12 +6,49 @@ import {
   FaArrowRight,
   FaRunning,     
   FaShieldAlt,   
-  FaSmileBeam    
+  FaSmileBeam,
+  FaMoon
 } from "react-icons/fa";
 import { GiStomach } from "react-icons/gi";
 import styles from "./Benefits.module.css";
 
 const benefits = [
+  {
+    icon: FaHeart, 
+    color: "honey",
+    title: "Builds a Stronger Bond",
+    text: "Creates special one-on-one time and deepens connection.",
+  },
+  {
+    icon: FaMoon, 
+    color: "sage",
+    title: "Promotes Better Sleep",
+    text: "Helps your baby feel calm, relaxed and secure.",
+  },
+  {
+    icon: GiStomach, 
+    color: "peach",
+    title: "Supports Digestion",
+    text: "Can help with colic, gas and tummy discomfort.",
+  },
+  {
+    icon: FaShieldAlt, 
+    color: "sky",
+    title: "Boosts The Immune System",
+    text: "Encourages healthy circulation and lymph flow.",
+  },
+  {
+    icon: FaBrain, 
+    color: "lilac",
+    title: "Supports Development",
+    text: "Stimulates the nervous system, encourages muscle tone and improves body awareness.",
+  },
+  {
+    icon: FaSmileBeam, 
+    color: "lilac",
+    title: "Reduces Stress",
+    text: "Helps release tension and regulates emotions.",
+  },
   {
     icon: FaRunning, 
     color: "honey",
@@ -61,7 +98,7 @@ export default function Benefits() {
     <main className={styles.page} id="benefits">
       <header className={styles.header}>
         <p className={styles.eyebrow}>
-          <FaHeart aria-hidden="true" /> A Path to Health, Happiness, and Connection.
+          <FaHeart aria-hidden="true" size={30} /> A Path to Health, Happiness, and Connection.
         </p>
         <h1 className={styles.title}>
           The <span className={styles.highlight}>benefits</span> of baby
