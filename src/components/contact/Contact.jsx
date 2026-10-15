@@ -12,7 +12,7 @@ import styles from "./Contact.module.css";
 
 /* ---------- Edit these ---------- */
 const CONTACT_IMAGE = "/contact/contact.webp";
-const EMAIL = "Pennydev1@gmail.com";
+const EMAIL = "pennydev5@gmail.com";
 const PHONE = "+27 82 457 6296";
 
 const socials = [

@@ -56,7 +56,7 @@ export default function Footer() {
           </Link>
 
           <p className={styles.tagline}>
-            Gentle touch. Big benefits. Baby massage classes for babies from 0
+            Nurturing touch. Baby massage classes for babies from 0
             – 12 months.
           </p>
 
