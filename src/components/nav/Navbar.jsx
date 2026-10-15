@@ -9,7 +9,7 @@ const LOGO_IMAGE = "/hero/logo.jpeg"; // put your logo in /public/images/
 /* -------------------------------- */
 
 const links = [
-  { href: "/#home", label: "Home" },
+  { href: "/", label: "Home" },
   { href: "/#classes", label: "Classes" },
   { href: "/#benefits", label: "Benefits" },
   { href: "/about", label: "About" },

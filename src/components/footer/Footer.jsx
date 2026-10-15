@@ -22,8 +22,8 @@ const DESIGNER_URL = "https://luxinteractive.co.za";
 
 const pages = [
   { href: "/", label: "Home" },
-  { href: "/classes", label: "Classes" },
-  { href: "/benefits", label: "Benefits" },
+  { href: "/#classes", label: "Classes" },
+  { href: "/#benefits", label: "Benefits" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
   { href: "/book", label: "Book a class" },
