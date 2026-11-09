@@ -48,10 +48,14 @@ export default function ContactPage() {
             <div className={styles.details}>
               <div className={styles.detail}>
                 <h2>
-                  <FaMapMarkerAlt aria-hidden="true" /> Location
+                  <FaMapMarkerAlt aria-hidden="true" /> Douglas
                 </h2>
-                <p>Douglas and Kimberley</p>
-                <p>Northern Cape, South Africa</p>
+                <p>La Rose Guesthouse 2 Carel Cilliers Douglas 8730 </p>
+                <br/>
+                <h2>
+                  <FaMapMarkerAlt aria-hidden="true" /> Kimberley
+                </h2>
+                <p>72 Main Road Beaconsfield Kimberley 8301</p>
               </div>
 
               <div className={styles.detail}>
