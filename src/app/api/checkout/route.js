@@ -23,6 +23,12 @@ import {
 */
 
 export async function POST(request) {
+    if (process.env.BOOKINGS_PAUSED === "true") {
+    return NextResponse.json(
+      { error: "Bookings are closed for now. Please check back next year." },
+      { status: 503 }
+    );
+  }
   let body;
   try {
     body = await request.json();
