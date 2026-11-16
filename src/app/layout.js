@@ -37,7 +37,7 @@ export const metadata = {
     type: "website",
     images: [
     {
-      url: "/images/opengraph-image.jpg",
+      url: "/opengraph-image.jpg",
       width: 1200,
       height: 630,
       alt: "BeeWell Infant Spa baby massage classes",
