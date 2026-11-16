@@ -35,6 +35,14 @@ export const metadata = {
     siteName: "BeeWell Infant Spa",
     locale: "en_ZA",
     type: "website",
+    images: [
+    {
+      url: "/images/opengraph-image.jpg",
+      width: 1200,
+      height: 630,
+      alt: "BeeWell Infant Spa baby massage classes",
+    },
+  ],
   },
   twitter: {
     card: "summary_large_image",
