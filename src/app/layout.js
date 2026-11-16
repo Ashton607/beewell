@@ -30,7 +30,7 @@ export const metadata = {
   openGraph: {
     title: "BeeWell Infant Spa | Baby Massage Classes",
     description:
-      "Nurturing touch. A Path to Health, Happiness, and Connection. Baby massage classes for babies from 0 to 12 months in Douglas and Kimberley.",
+      "Certified baby massage classes in Douglas and Kimberley, Northern Cape. Book now!",
     url: "/",
     siteName: "BeeWell Infant Spa",
     locale: "en_ZA",
@@ -40,7 +40,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "BeeWell Infant Spa | Baby Massage Classes",
     description:
-      "Nurturing touch. A Path to Health, Happiness, and Connection. Baby massage classes in Douglas and Kimberley.",
+      "Certified baby massage classes in Douglas and Kimberley, Northern Cape. Book now!",
   },
 };
 
