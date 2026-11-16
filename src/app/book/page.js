@@ -5,7 +5,7 @@ import BookingFlow from "@/components/book/Bookingflow";
 // Set to false when bookings reopen
 // Made edits to this page and api/checkout/route.js to prevent bookings while the site is closed for the year.
 const BOOKINGS_PAUSED = true;
-const REOPEN_TEXT = "January 2027"; // change to your real date
+const REOPEN_TEXT = "4th of January 2027"; // change to your real date
 
 export const metadata = {
   title: "Book a Class | BeeWell Infant Spa",
@@ -25,7 +25,7 @@ export default function BookPage() {
         </h1>
         <p className={styles.intro}>
           {BOOKINGS_PAUSED
-            ? `Bookings are closed for now and reopen in ${REOPEN_TEXT}. Please get in touch if you'd like to be told when classes start again.`
+            ? `Please get in touch if you want to do early bookings. Bookings open on the  ${REOPEN_TEXT}.`
             : "Choose your town, pick a start date and time, and tell us a little about you. Your time slot stays the same for all 5 weeks."}
         </p>
       </header>
